@@ -16,8 +16,17 @@
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": ">=2.0.5",
-        "yiisoft/yii2-bootstrap": "*",
-        "yiisoft/yii2-swiftmailer": "*"
+        "yiisoft/yii2-bootstrap": "^2.0",
+        "yiisoft/yii2-swiftmailer": "*",
+        "kartik-v/yii2-widgets": "dev-master",
+        "amnah/yii2-user": "^4.0",
+        "schmunk42/yii2-giiant": "@stable",
+        "2amigos/yii2-translateable-behavior": "*",
+        "kraksoft/colorbox": "^1.5",
+        "himiklab/yii2-colorbox-widget": "*",
+        "sibilino/yii2-dygraphswidget": "*",
+        "yiisoft/yii2-jui": "^2.0",
+        "codemix/yii2-localeurls": "^1.4"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

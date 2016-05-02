@@ -1,7 +1,7 @@
 assets/*
 !assets/.gitignore
-protected/runtime/*
-!protected/runtime/.gitignore
-protected/data/*.db
-themes/classic/views/
-/config/db.php
+runtime/*
+!runtime/.gitignore
+upload/*
+!upload/.gitignore
+vendor

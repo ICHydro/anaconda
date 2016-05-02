@@ -3,11 +3,17 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Catchment;
+use app\models\Sensor;
+use app\models\UploaddataForm;
+
+
 
 class SiteController extends Controller
 {
@@ -16,10 +22,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['logout', 'addsensor', 'uploaddata'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'addsensor', 'uploaddata'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -52,43 +58,126 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionLogin()
-    {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
+    public function actionObservatory($locationid=null, $sensorid=null){
+        if (isset($locationid)){
+            $location = Catchment::find()->where(['id' => $locationid])->one();
+            if (isset($sensorid)){
+                $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+                return $this->render('sensor', array('location'=> $location, 'sensor' => $sensor));
+            }else{
+                $sensors = Sensor::find()->where(['catchmentid' => $location->id]) ->all();
+                return $this->render('location', array('location'=> $location, 'sensors' => $sensors));
+            }
         }
+        $locations = Catchment::find()->all();
+        return $this->render('observatory', array('locations' => $locations));
+    }
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+    public function actionAddsensor($locationid=null){
+        $model = new Sensor;
+        if (isset($locationid)){
+            $model->catchmentid = $locationid;
         }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
-
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
-
-    public function actionContact()
-    {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
+        try {
+            if ($model->load($_POST) && $model->save()) {
+                return $this->redirect(['/site/sensor', 'sensorid' => $model->id]);
+            } elseif (!\Yii::$app->request->isPost) {
+                $model->load($_GET);
+            }
+        } catch (\Exception $e) {
+            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
+            $model->addError('_exception', $msg);
         }
-        return $this->render('contact', [
-            'model' => $model,
-        ]);
+        return $this->render('addsensor', ['model' => $model]);
     }
 
-    public function actionAbout()
-    {
-        return $this->render('about');
+    public function actionSensorpopup($locationid=null){
+        $locations = Catchment::find()->all();
+        if (isset($locationid)){
+            $location = Catchment::find()->where(['id' => $locationid])->one();
+        }else{
+            $location = $locations[0];
+        }
+        return $this->renderPartial('sensorpopup', array('locations' => $locations, 'location' => $location));
     }
+
+
+    public function actionIndicators(){
+        return $this->render('indicators');
+    }
+
+    public function actionSensors(){
+        return $this->render('sensors');
+    }
+
+    public function actionSensor($sensorid=null){
+        if (isset($sensorid)){
+            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+            return $this->render('sensor_sensor', array('sensor' => $sensor));
+        }else{
+            return $this->render('sensor_sensor', array('sensor' => null));
+        }
+    }
+
+    public function actionMaps($sensorid=null){
+        if (isset($sensorid)){
+            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+            return $this->render('sensor_maps', array('sensor' => $sensor));
+        }else{
+            return $this->render('sensor_maps', array('sensor' => null));
+        }
+    }
+
+    public function actionRiverflow($sensorid=null){
+        if (isset($sensorid)){
+            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+            return $this->render('sensor_riverflow', array('sensor' => $sensor));
+        }else{
+            return $this->render('sensor_riverflow', array('sensor' => null));
+        }
+    }
+
+    public function actionRainfall($sensorid=null){
+        if (isset($sensorid)){
+            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+            return $this->render('sensor_rainfall', array('sensor' => $sensor));
+        }else{
+            return $this->render('sensor_rainfall', array('sensor' => null));
+        }        
+    }
+
+    public function actionTemperature($sensorid=null){
+        if (isset($sensorid)){
+            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+            return $this->render('sensor_temperature', array('sensor' => $sensor));
+        }else{
+            return $this->render('sensor_temperature', array('sensor' => null));
+        }        
+    }
+
+    public function actionTracing($sensorid=null){
+        if (isset($sensorid)){
+            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+            return $this->render('sensor_tracing', array('sensor' => $sensor));
+        }else{
+            return $this->render('sensor_tracing', array('sensor' => null));
+        }
+    }
+
+    public function actionUploaddata($sensorid=null){
+        $model = new UploaddataForm;
+
+        try {
+            if ($model->load($_POST) && $model->save()) {
+                return $this->redirect(['/site/sensor', 'sensorid' => $model->id]);
+            } elseif (!\Yii::$app->request->isPost) {
+                $model->load($_GET);
+            }
+        } catch (\Exception $e) {
+            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
+            $model->addError('_exception', $msg);
+        }
+        return $this->render('sensor_uploaddata', ['model' => $model]);
+    }
+
 }

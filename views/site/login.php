@@ -8,12 +8,19 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 $this->title = 'Login';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-login">
+    <div class="container warning-message">
+        <div class='row'>
+            <div class="col-lg-12  text-center">
+                <p><?=\Yii::t('app', 'Login with your email address and password to view your personal data.'); ?></p>
+            </div>
+        </div>
+    </div>
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to login:</p>
+    <p><?=\Yii::t('app', 'Please fill out the following fields to login:'); ?></p>
 
     <?php $form = ActiveForm::begin([
         'id' => 'login-form',
@@ -40,8 +47,5 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php ActiveForm::end(); ?>
 
-    <div class="col-lg-offset-1" style="color:#999;">
-        You may login with <strong>admin/admin</strong> or <strong>demo/demo</strong>.<br>
-        To modify the username/password, please check out the code <code>app\models\User::$users</code>.
-    </div>
+
 </div>
