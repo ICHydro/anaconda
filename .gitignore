@@ -5,3 +5,8 @@ runtime/*
 upload/*
 !upload/.gitignore
 vendor
+.DS_Store
+.#*
+*.swp
+*.autosave
+

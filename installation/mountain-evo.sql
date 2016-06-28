@@ -1,11 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.5.2
--- http://www.phpmyadmin.net
---
--- Host: 127.0.0.1
--- Gegenereerd op: 02 mei 2016 om 00:50
--- Serverversie: 5.7.9
--- PHP-versie: 5.6.16
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -27,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `attachment` (
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `calibration`
+-- Structure for table `calibration`
 --
 
 DROP TABLE IF EXISTS `calibration`;
@@ -43,89 +35,10 @@ CREATE TABLE IF NOT EXISTS `calibration` (
   KEY `fk_calibration_sensor1` (`sensorid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
 
---
--- Gegevens worden geëxporteerd voor tabel `calibration`
---
-
-INSERT INTO `calibration` (`id`, `datetime`, `height`, `measure`, `sensorid`, `yourname`, `youremail`) VALUES
-(1, '2013-09-11 00:00:00', 120, 'm', 1, NULL, NULL),
-(2, '2013-09-11 00:00:00', 150, 'mm', 1, NULL, NULL),
-(3, '2013-09-11 00:00:00', 150, 'mm', 1, NULL, NULL),
-(4, '2013-09-11 00:00:00', 160, 'cm', 1, NULL, NULL),
-(5, '2013-09-11 00:00:00', 170, 'cm', 1, NULL, NULL),
-(6, '2013-09-11 00:00:00', 170, 'cm', 1, NULL, NULL),
-(7, '2013-09-11 00:00:00', 1300, 'm', 1, NULL, NULL),
-(8, '2013-09-11 00:00:00', 1300, 'cm', 1, NULL, NULL),
-(9, '2013-09-11 00:00:00', 359, 'cm', 1, NULL, NULL),
-(10, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(12, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(13, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(14, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(15, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(17, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(18, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(19, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(20, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(21, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(22, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(23, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(24, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(25, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(26, '2013-09-11 00:00:00', 13000, 'cm', 1, NULL, NULL),
-(27, '2013-09-11 00:00:00', 13000, 'cm', 1, NULL, NULL),
-(28, '2013-09-11 00:00:00', 13056, 'cm', 1, NULL, NULL),
-(29, '2013-09-20 12:00:00', 130, 'cm', 1, NULL, NULL),
-(30, '2013-09-20 12:00:00', 130, 'cm', 1, NULL, NULL),
-(31, '2013-09-20 12:00:00', 130, 'cm', 1, NULL, NULL),
-(32, '2013-09-20 12:00:00', 130, 'm', 1, NULL, NULL),
-(33, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(37, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(38, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(39, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(40, '2013-09-11 00:00:00', 1520, 'cm', 1, NULL, NULL),
-(41, '2013-09-11 00:00:00', 1520, 'cm', 1, NULL, NULL),
-(42, '2013-09-11 00:00:00', 1520, 'mm', 1, NULL, NULL),
-(43, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(44, '2013-09-11 00:00:00', 130, 'cm', 1, NULL, NULL),
-(46, '2013-09-11 00:00:00', 1300, 'cm', 1, NULL, NULL),
-(48, '2013-09-13 12:19:17', 150, 'cm', 1, NULL, NULL),
-(50, '2013-09-20 12:00:00', 155, 'cm', 1, NULL, NULL),
-(51, '2013-09-20 12:00:00', 1552, 'cm', 1, NULL, NULL),
-(52, '2013-09-20 12:00:00', 155, 'cm', 1, NULL, NULL),
-(57, '2013-09-19 12:00:00', 50, 'cm', 1, NULL, NULL),
-(59, '2013-09-11 12:00:01', 3590, 'mm', 1, NULL, NULL),
-(60, '2016-02-11 00:00:00', 20, 'mm', 6, NULL, NULL),
-(61, '2016-02-11 00:00:00', 20, 'mm', 6, NULL, NULL),
-(62, '2016-02-11 00:00:00', 20, 'mm', 6, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(63, '2016-02-11 00:00:00', NULL, 'mm', 2, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(64, '2016-02-11 00:00:00', NULL, 'mm', 2, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(65, '2016-02-11 00:00:00', NULL, 'mm', 2, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(66, '2016-02-11 00:00:00', NULL, 'mm', 2, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(67, '2016-02-11 00:00:00', NULL, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(68, '2016-02-11 00:00:00', NULL, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(69, '2016-02-11 00:00:00', NULL, 'mm', 2, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(70, '2016-02-11 00:00:00', 20, 'mm', 2, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(71, '2016-02-11 00:00:00', 20, 'mm', 2, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(72, '2016-02-11 00:00:00', 20, 'mm', 1, 'Bart De Maesschalck', 'rebecca_ortega@hotmail.com'),
-(73, '2016-02-11 00:00:00', 20, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(74, '2016-02-11 00:00:00', 20, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(75, '2016-02-11 00:00:00', 20, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(76, '2016-02-11 00:00:00', 20, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(77, '2016-02-11 00:00:00', 25, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(78, '2016-02-11 00:00:00', NULL, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(79, '2016-02-11 00:00:00', NULL, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(80, '2016-02-11 00:00:00', NULL, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(81, '2016-02-11 00:00:00', NULL, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(82, '2016-02-11 00:00:00', NULL, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(83, '2016-02-12 00:00:00', 20, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(84, '2016-02-12 00:00:00', 20, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(85, '2016-02-12 00:00:00', 20, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com'),
-(86, '2016-02-12 00:00:00', 20, 'mm', 1, 'Bart De Maesschalck', 'bart.demaesschalck@gmail.com');
-
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `catchment`
+-- Structure for table `catchment`
 --
 
 DROP TABLE IF EXISTS `catchment`;
