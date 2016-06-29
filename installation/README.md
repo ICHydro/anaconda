@@ -1,120 +1,53 @@
 # Installation guide Anaconda
 
-## 1. Setting up the server
+## 1. Server setup
 
-To host the application, you need to set up the server. The application should be hosted on a LAMP or WAMP server.
+Anaconda is designed for a [LAMP](https://en.wikipedia.org/wiki/LAMP_%28software_bundle%29 "LAMP wikipedia") or [WAMP](https://en.wikipedia.org/wiki/LAMP_%28software_bundle%29#WAMP "WAMP wikipedia") setup. Installation depends on the particularities of your operating system, but some typical installation methods can be found below.
 
-### LAMP (Linux, Apache, MySQL, PHP)
+### Requirements:
 
-LAMP is an open source Web development platform. It uses Linux as the operating system, Apache as the Web server, MySQL as the relational database management system and PHP as the object-oriented scripting language. 
+The Yii2 framework on which the project is build, needs PHP 5.4 or higher with the mbstring extension and PCRE-support.
 
-The reason they call it a stack is because each level derives off its base layer. Your Operating system, Linux, is the base layer. Then Apache, your web daemon sits on top of your OS. Then your database stores all the information served by your web daemon. Finally, PHP is used to drive and display all the data, and allow for user interaction.
+### CENTOS
 
-The installation of LAMP depends on the Linux distribution. Please refer to the specific documentation for the installation of the LAMP setup.
+```
+sudo yum install httpd mysql-server php php-mbstring php-pdo php-mysql
+sudo service httpd start
+```
 
-### WAMP (Window, Apache, MySQL, PHP)
+To secure your mysql installation and set a root password run:
+
+```
+sudo mysql_secure_installation
+```
+
+### Windows
 
 If you use LAMP on a Windows operating system, it can also be referred to as WAMP. WAMP means the usage of LAMP open source web development on a windows operating system.
 
 In order to install LAMP on Windows, follow the steps in the chronological order as shown below:
 
-* Go to http://www.wampserver.com/
+* Download the installation file from <http://www.wampserver.com/>
 
-* Click on Download or Scroll down to find the list of versions
+* Open the installation file and follow the self-explanatory process to complete the download.
 
-* Now click on the version that you want to download
+## 2. Installing Anaconda
 
-* Click on “Direct Download” in order to download the installation file
+Download anaconda and copy the contents of the www/ directory to the root of your web server, for instance:
 
-* After downloading the installation file, click on the installation file and follow the self-explanatory process to complete the download.
+```
+curl -O https://github.com/ICHydro/anaconda/archive/master.zip
+unzip master.zip
+cp www/* /var/www/html/
+```
 
-### Requirements:
+You can check whether all php requirements are met by pointing your browser to:
 
-Yii2, the framework on which the project is build, needs minimum PHP 5.4 with the mbstring extension and PCRE-support.
+```
+http://anaconda-url/requirements.php
+```
 
-
-## 2. Version control system
-
-When working on code for a website or piece of software it’s always important to track the changes. This is especially critical when collaborating on projects where multiple people will be updating the same code. It’s crucial to keep thorough records of the work being done.
-
-This is where a Version Control System comes in handy. A version control system acts as a growth chart for a project, allowing contributors to stay up to date with each other’s changes when adding new improvements and features.
-
-For this project, we are using GIT as version control system, and the code is stored on GITHub
-
-### Git
-
-Git is a widely used source code management system for software development. It is a distributed revision control system with an emphasis on speed, data integrity, and support for distributed, non-linear workflows. Git was initially designed and developed in 2005 by Linux kernel developers.
-
-#### Installing GIT on windows
-
-* Download the Git for Windows installer package on https://git-scm.com/download/win
-
-* When you've successfully started the installer, you should see the Git Setup wizard screen. Follow the Next and Finish prompts to complete the installation.
-
-* Configure your username using the following command, replacing the name with your own.
-
-git config --global user.name "Wouter"
-
-* Configure your email address using the following command, replacing the email address with your own.
-
-git config --global user.email wouter@gmail.com
-
-#### Installing GIT on Linux
-
-Follow the following steps to install GIT on Linux:
-
-1. Enter the following command to install Git:
-
-sudo apt-get install git
-
-2. Verify the installation was successful by typing which git at the command line.
-
-which git
->> /opt/local/bin/git
-
-3. Configure your username using the following command.
-
-git config --global user.name "Wouter"
-
-4. Configure your email address using the following command.
-
-git config --global user.email wouter@gmail.com
-
-### Downloading a Repository with GIT
-
-You can get a Git project using two main approaches. The first takes an existing project or directory and imports it into Git. The second clones an existing Git repository from another server. As the project is already hosted on the GitHub server, we need to clone it.
-
-#### Cloning an Existing Repository
-
-If you want to get a copy of an existing Git repository, the command you need is git clone. If you’re familiar with other VCS systems such as Subversion, you’ll notice that the command is clone and not checkout. This is an important distinction — Git receives a copy of nearly all data that the server has. Every version of every file for the history of the project is pulled down when you run git clone. In fact, if your server disk gets corrupted, you can use any of the clones on any client to set the server back to the state it was in when it was cloned.
-
-You clone a repository with git clone [url]. To clone the project, you can do so like this:
-
-cd myWorkingDirectory
-git clone git@github.com:ICHydro/anaconda.git
-
-That creates a directory named " mountain-evo ", initializes a .git directory inside it, pulls down all the data for that repository, and checks out a working copy of the latest version. If you go into the new mountain-evo directory, you’ll see the project files in there, ready to be worked on or used.
-
-Git has a number of different transfer protocols you can use. The previous example uses the git:// protocol, but you may also see http(s):// or user@server:/path.git, which uses the SSH transfer protocol.
-
-#### Git Interface Tools
-
-There are also some tools that offer a visual interface for handling the GIT commands and are easier than executing the commands on the command line.
-
-##### TortoiseGit
-
-You can download TortoiseGit on https://tortoisegit.org
-
-TortoiseGit is a Windows Shell Interface to Git and based on TortoiseSVN. It's open source and can fully be build with freely available software.
-
-##### SourceTree
-
-You can download SourceTree on https://www.atlassian.com/software/sourcetree
-
-SourceTree simplifies how you interact with your Git and Mercurial repositories so you can focus on coding. Visualize and manage your repositories through SourceTree's simple interface.
-
-cd myWorkingDirectory
-git clone git@github.com:Webvillage/mountain-evo.git
+where you replace "anaconda-url" with the url of the anaconda installation.
 
 ## 3. Composer
 
@@ -180,7 +113,9 @@ This downloads composer.phar (which is a packed php archive by the way, see http
 
 Now you can use composer everywhere on your server on the command line via
 
+```
 composer
+```
 
 Type the above command to make sure Composer is installed correctly.
 
@@ -194,23 +129,31 @@ To start using Composer in your project, all you need is a composer.json file. T
 
 Before starting with development, all dependencies need to be downloaded and installed. This can be done with the following command:
 
+```
 composer install
+```
 
 The dependencies are installed in the vendor directory.
 
 To install one project dependency, use the name of the package:
 
+```
 composer install package-name
+```
 
 To remove a package, you can use
 
+```
 composer remove package-name
+```
 
 Update project dependencies
 
 During the project, you can also update the project dependencies. This checks online for new versions of the libraries and installs the newer versions if found.
 
+```
 composer update
+```
 
 ## 4. Database
 
@@ -220,30 +163,41 @@ The project is using MySQL as database. MySQL is an open-source relational datab
 
 In Windows, you mysql.exe file is probably located in the C:\wamp\bin\mysql\mysql5.7.9\bin\ folder. Using Powershell in windows might give errors. Use the normal command prompt.
 
-First create the new mountain-evo database:
+First create the new database:
 
-mysql -uroot -e "CREATE DATABASE envisim COLLATE utf8_general_ci"
-
-or
-
-C:\wamp\bin\mysql\mysql5.7.9\bin\mysql -uroot -e "CREATE DATABASE envisim
-COLLATE utf8_general_ci"
-
-Change to the root folder of the project and import the mountain-evo.sql file:
-
-mysql -u root envisim < mountain-evo.sql
+```
+mysql -u root -p -e "CREATE DATABASE envisim COLLATE utf8_general_ci"
+```
 
 or
 
-C:\wamp\bin\mysql\mysql5.7.9\bin\mysql -uroot -e "CREATE DATABASE envisim COLLATE utf8_general_ci"
+```
+C:\wamp\bin\mysql\mysql5.7.9\bin\mysql -uroot -p -e "CREATE DATABASE envisim COLLATE utf8_general_ci"
+```
 
-To create a specific user for the project, you can execute the following commando:
+Import the mountain-evo.sql file:
 
-mysql -uroot -e "grant all privileges on envisim.* to 'envisim'@'localhost' identified by 'zM8pdEaeFxYY2XnE'"
+```
+mysql -u root -p envisim < anaconda-master/installation/anaconda.sql
+```
 
 or
 
+```
+C:\wamp\bin\mysql\mysql5.7.9\bin\mysql -u root -p envisim < anaconda-master\installation\anaconda.sql
+```
+
+To create a specific user for the project, you can execute the following command:
+
+```
+mysql -uroot -p -e "grant all privileges on envisim.* to 'envisim'@'localhost' identified by 'zM8pdEaeFxYY2XnE'"
+```
+
+or
+
+```
 C:\wamp\bin\mysql\mysql5.7.9\bin\ mysql -uroot -e "grant all privileges on envisim.* to 'envisim'@'localhost' identified by 'zM8pdEaeFxYY2XnE'"
+```
 
 ### PHPMyAdmin
 
@@ -275,7 +229,7 @@ MySQL Workbench can import the scheme from your database and visualize it:
 
 You can change the model, and synchronize it again with the database to update the database with the changes you made.
 
-![MySQL workbench](/images/mysqlworkbench.png)
+![MySQL workbench](/images/mysqlworkbench.jpg)
 
 ## 5. Directories
 
@@ -285,21 +239,25 @@ Yii needs some directories to be writable by the server. These directories are r
 
 Change to your project home folder and give the permissions: Runtime directory
 
+```
 sudo chmod -R 777 runtime
+```
 
 Assets directory:
 
+```
 sudo chmod -R 777 web/assets
+```
 
 Upload directory:
 
+```
 sudo chmod -R 777 uploads
+```
 
-That’s all. Well done installing!!
+That’s all. The website should work now when accessing the web url.
 
-The website should work now when accessing the web url.
-
-You can login with admin/admin.
+The default login and password are admin/admin.
 
 
 
