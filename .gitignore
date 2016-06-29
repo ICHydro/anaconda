@@ -4,4 +4,3 @@ runtime/*
 !runtime/.gitignore
 upload/*
 !upload/.gitignore
-vendor
