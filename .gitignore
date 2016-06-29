@@ -1,5 +1,4 @@
 assets/*
-!assets/.gitignore
 !assets/AppAsset.php
 runtime/*
 !runtime/.gitignore
