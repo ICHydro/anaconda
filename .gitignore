@@ -1,8 +1,9 @@
 assets/*
-!assets/.gitignore
+!assets/AppAsset.php
 runtime/*
 !runtime/.gitignore
 upload/*
+<<<<<<< HEAD
 !upload/.gitignore
 vendor
 .DS_Store
@@ -10,3 +11,6 @@ vendor
 *.swp
 *.autosave
 
+=======
+!upload/.gitignore
+>>>>>>> abf74022801187dd25e50eba26bf209168a867a8

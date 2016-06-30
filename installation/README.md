@@ -6,12 +6,12 @@ Anaconda is designed for a [LAMP](https://en.wikipedia.org/wiki/LAMP_%28software
 
 ### Requirements:
 
-The Yii2 framework on which the project is build, needs PHP 5.4 or higher with the mbstring extension and PCRE-support.
+The Yii2 framework on which the project is built, needs PHP 5.4 or higher with the mbstring extension and PCRE-support.
 
 ### CENTOS
 
 ```
-sudo yum install httpd mysql-server php php-mbstring php-pdo php-mysql
+sudo yum install httpd mysql-server php php-mbstring php-pdo
 sudo service httpd start
 ```
 
@@ -23,11 +23,9 @@ sudo mysql_secure_installation
 
 ### Windows
 
-If you use LAMP on a Windows operating system, it can also be referred to as WAMP. WAMP means the usage of LAMP open source web development on a windows operating system.
+To install LAMP on Windows:
 
-In order to install LAMP on Windows, follow the steps in the chronological order as shown below:
-
-* Download the installation file from <http://www.wampserver.com/>
+* Download the installation file from <http://www.wampserver.com/> and
 
 * Open the installation file and follow the self-explanatory process to complete the download.
 
@@ -157,7 +155,7 @@ composer update
 
 ## 4. Database
 
-The project is using MySQL as database. MySQL is an open-source relational database management system (RDBMS). MySQL is a popular choice of database for use in web applications, and is a central component of the widely used LAMP open-source web application software stack.
+We use the standard LAMP setup, which includes MySQL as the database. MySQL should already be installed if you followed the instructions above.
 
 ### Loading data in MySQL.
 
@@ -231,27 +229,14 @@ You can change the model, and synchronize it again with the database to update t
 
 ![MySQL workbench](/images/mysqlworkbench.jpg)
 
-## 5. Directories
+## 5. Permissions
 
-To finalize the installation, there is one more thing to do for Linux users. This is not needed for the Windows installation.
+To finalize the installation, there is one more thing to do for Linux users. This is not needed for the Windows installation. Yii needs some directories to be writable by the server. Change to your project home directory and change the permissions of the following directories:
 
-Yii needs some directories to be writable by the server. These directories are runtime, assets and upload for the file uploads.
-
-Change to your project home folder and give the permissions: Runtime directory
 
 ```
 sudo chmod -R 777 runtime
-```
-
-Assets directory:
-
-```
 sudo chmod -R 777 web/assets
-```
-
-Upload directory:
-
-```
 sudo chmod -R 777 uploads
 ```
 

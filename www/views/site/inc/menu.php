@@ -1,5 +1,5 @@
                         <?php 
-                        use kartik\widgets\SideNav;
+                        use kartik\sidenav\SideNav;
                         use yii\helpers\Url;
                         $sensorid = isset($sensor)?$sensor->id:null;
                         echo SideNav::widget([
