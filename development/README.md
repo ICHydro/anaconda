@@ -2,9 +2,9 @@
 
 ## 1. Yii2
 
-We use the Yii2, which is a component-based PHP framework for rapidly developing modern Web applications. The name YII can be considered as the acronym for Yes It Is! Yii2 inherits the main spirit behind YII for being a simple, fast and highly extensible PHP framework. Some advantages include:
+We use Yii2, which is a component-based PHP framework for rapid development of modern Web applications. Some advantages include:
 
-* Yii2 is a generic Web programming framework
+* Yii2 is a generic web programming framework
 * Yii2 can be used for developing all kinds of Web applications based on PHP
 * Yii2 is component-based architecture and sophisticated caching support
 * Yii2 is especially suitable for developing large-scale applications. such as portals, forums, content management systems (CMS), e-commerce projects, RESTful Web services, and so on

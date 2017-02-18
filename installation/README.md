@@ -2,7 +2,7 @@
 
 ## 1. Server setup
 
-Anaconda is designed for a [LAMP](https://en.wikipedia.org/wiki/LAMP_%28software_bundle%29 "LAMP wikipedia") or [WAMP](https://en.wikipedia.org/wiki/LAMP_%28software_bundle%29#WAMP "WAMP wikipedia") setup. Installation depends on the particularities of your operating system, but some typical installation methods can be found below.
+Anaconda is designed for a [LAMP](https://en.wikipedia.org/wiki/LAMP_%28software_bundle%29 "LAMP wikipedia") or [WAMP](https://en.wikipedia.org/wiki/LAMP_%28software_bundle%29#WAMP "WAMP wikipedia") setup. Installation depends on the particularities of your operating system, but some typical installation methods are described here.
 
 ### Requirements:
 
@@ -32,6 +32,7 @@ To install LAMP on Windows:
 * Download the installation file from <http://www.wampserver.com/> and
 
 * Open the installation file and follow the self-explanatory process to complete the download.
+
 
 ## 2. Installing Anaconda
 
@@ -130,7 +131,7 @@ We use the standard LAMP setup, which includes MySQL as the database. MySQL shou
 
 ### Loading the data in MySQL.
 
-In Windows, you mysql.exe file is probably located in the C:\wamp\bin\mysql\mysql5.7.9\bin\ folder. Using Powershell in windows might give errors. Use the normal command prompt.
+In Windows, your mysql.exe file is probably located in the C:\wamp\bin\mysql\mysqlX.X.X\bin\ folder (where X.X.X is the version of mysql that you have installed). Using Powershell in windows might give errors. Use the normal command prompt.
 
 First create the new database:
 
@@ -141,19 +142,23 @@ mysql -u root -p -e "CREATE DATABASE anaconda COLLATE utf8_general_ci"
 or
 
 ```
-C:\wamp\bin\mysql\mysql5.7.9\bin\mysql -uroot -p -e "CREATE DATABASE anaconda COLLATE utf8_general_ci"
+C:\wamp\bin\mysql\mysqlX.X.X\bin\mysql -uroot -p -e "CREATE DATABASE anaconda COLLATE utf8_general_ci"
 ```
 
-Import the anaconda.sql file:
+Import the schema and load the initialization data:
 
 ```
-mysql -u root -p anaconda < anaconda-master/installation/anaconda.sql
+mysql -u root -p anaconda < anaconda-master/installation/schema.sql
+mysql -u root -p anaconda < anaconda-master/installation/init.sql
+
 ```
 
 or
 
+
 ```
-C:\wamp\bin\mysql\mysql5.7.9\bin\mysql -u root -p anaconda < anaconda-master\installation\anaconda.sql
+C:\wamp\bin\mysql\mysqlX.X.X\bin\mysql -u root -p anaconda < anaconda-master\installation\schema.sql
+C:\wamp\bin\mysql\mysqlX.X.X\bin\mysql -u root -p anaconda < anaconda-master\installation\init.sql
 ```
 
 To create a specific user for the project, you can execute the following command:
@@ -169,6 +174,22 @@ C:\wamp\bin\mysql\mysql5.7.9\bin\ mysql -uroot -e "grant all privileges on anaco
 ```
 
 where obviously you change 'myuser' and 'mypassword' with appropriate credentials.
+
+### Using PostgreSQL:
+
+The use of PostgreSQL is a bit more experimental but possible. The main advantage of PostgreSQL is the good integration with open source spatial databases (PostGIS), which is useful when storing data with a spatial dimension.
+
+Setting up the database under linux (assuming you are user postgres):
+
+```
+createdb anaconda
+createuser -P anaconda
+psql -d anaconda -a -f anaconda_pg.sql
+psql -d anaconda -c "REASSIGN OWNED BY postgres TO anaconda"
+```
+
+Note: ideally use UTF encoding. Set it explicitly with --lc-collate if you want to be sure.
+
 
 ### Maintaining the database.
 
