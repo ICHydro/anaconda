@@ -17,6 +17,7 @@ use app\models\UploaddataForm;
 
 class SiteController extends Controller
 {
+
     public function behaviors()
     {
         return [
@@ -70,6 +71,8 @@ class SiteController extends Controller
             }
         }
         $locations = Catchment::find()->all();
+
+        $this->layout='main_nofooter.php';
         return $this->render('observatory', array('locations' => $locations));
     }
 

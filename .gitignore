@@ -3,3 +3,5 @@
 *.swp
 *.autosave
 www/vendor/
+www/config/db.php 
+www/config/params.php

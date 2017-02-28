@@ -2,19 +2,19 @@
 
 /* @var $this yii\web\View */
 use yii\helpers\Html;
-$this->title = 'Mountain-Evo - index';
+$this->title = 'Mountain-EVO - index';
 ?>
 <div class="site-index">
 
     <div class="container jumbotron banner" style="background-image: url('<?php echo Yii::getAlias('@web'); ?>/images/photos/Home_Banner.png');">
         <div class='row'>
-            <div class="col-sm-6 padding-right-20px"><h3><b><?=\Yii::t('content', 'What is Mountain-Evo?'); ?></b></h3>
-                <p><?=\Yii::t('content', 'Mountain-Evo is a shared virtual observatory of remote mountain socio-ecological systems for poverty alleviation.'); ?> 
-                    <?=\Yii::t('content', 'Put the updated blurb and explanation about the site in here so that people get the website.'); ?>
+            <div class="col-sm-12 padding-right-20px"><h3><b><?=\Yii::t('content', 'Environmental virtual observatories'); ?></b></h3>
+                <p><?=\Yii::t('content', 'Mountain-EVO is a shared virtual observatory of ecosystem services in remote mountain regions.'); ?> 
+                    <?=\Yii::t('content', ''); ?>
                 </p>
-                <p><?=\Yii::t('content', 'Data is being collected in four case study locations: Peru, Kryzgstan, Nepal and Ethiopia.'); ?></p>
+                <p><?=\Yii::t('content', 'It was developed by the eponymous research project led by Imperial College London, but is now developed further by a broader community of scientists and stakeholders'); ?></p>
             </div>
-            <div class="col-sm-6 bottom-align-text">
+<!--            <div class="col-sm-4 bottom-align-text">
                 <p><?=\Yii::t('content', 'Explore two sections on Mountain-Evo:'); ?></p>
                 <div class='row'>
                     <div class="col-sm-6">
@@ -29,7 +29,7 @@ $this->title = 'Mountain-Evo - index';
                             <?=\Yii::t('content', 'Find out about Ecosystem Services, and check compare ESS indicator scores'); ?>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -39,25 +39,25 @@ $this->title = 'Mountain-Evo - index';
             <div class="col-sm-4">
                 <div>
                     <?=Html::a("<img src='".Yii::getAlias('@web')."/images/photos/Observatory_Charts.png' class='img-responsive'>", 'site/observatory'); ?>
-                    <h2><?=\Yii::t('content', 'Observatory charts'); ?></h2>
-                    <p><?=\Yii::t('content', 'View rainfall data for a location'); ?></p>
-                    <p><?=Html::a(\Yii::t('content', 'read more'), 'site/observatory'); ?></p>
+                    <h2><span class="glyphicon glyphicon-tent"></span><?=\Yii::t('content', ' Observations'); ?></h2>
+                    <p><?=\Yii::t('content', 'Explore observation data and graphs'); ?></p>
+                    <!-- <p><?=Html::a(\Yii::t('content', 'read more'), 'site/observatory'); ?></p> -->
                 </div>
             </div>
             <div class="col-sm-4">
                 <div>
                     <?=Html::a("<img src='".Yii::getAlias('@web')."/images/photos/ESS_Indicators.png' class='img-responsive'>", 'site/indicators'); ?>
-                    <h2><?=\Yii::t('content', 'ESS Indicators explained'); ?></h2>
-                    <p><?=\Yii::t('content', 'Find out what base flow index shows'); ?></p>
-                    <p><?=Html::a(\Yii::t('content', 'read more'), 'site/indicators'); ?></p>
+                    <h2><span class="glyphicon glyphicon-dashboard"></span><?=\Yii::t('content', ' Dashboard'); ?></h2>
+                    <p><?=\Yii::t('content', 'Tablet-friendly visualizations'); ?></p>
+                    <!-- <p><?=Html::a(\Yii::t('content', 'read more'), 'site/indicators'); ?></p> -->
                 </div>
             </div>
             <div class="col-sm-4">
                 <div>
-                    <?=Html::a("<img src='".Yii::getAlias('@web')."/images/photos/Sensors.png' class='img-responsive'>", 'site/sensors'); ?>
-                    <h2><?=\Yii::t('content', 'About the sensors'); ?></h2>
-                    <p><?=\Yii::t('content', 'Learn how they measure data'); ?></p>
-                    <p><?=Html::a(\Yii::t('content', 'read more'), 'site/sensors'); ?></p>
+                    <?=Html::a("<img src='".Yii::getAlias('@web')."/images/photos/ESS_Indicators.png' class='img-responsive'>", 'site/sensors'); ?>
+                    <h2><span class="glyphicon glyphicon-blackboard"></span><?=\Yii::t('content', ' Learning center'); ?></h2>
+                    <p><?=\Yii::t('content', 'Learn about mountain processes and sensors'); ?></p>
+                    <!-- <p><?=Html::a(\Yii::t('content', 'read more'), 'site/sensors'); ?></p> -->
                 </div>
             </div>
         </div>

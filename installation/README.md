@@ -44,19 +44,14 @@ unzip master
 cp anaconda-master/www/* /var/www/html/
 ```
 
-You can check whether all php requirements are met by pointing your browser to:
 
-```
-http://anaconda-url/requirements.php
-```
+## 3. Installing dependencies
 
-where you replace "anaconda-url" with the url of the anaconda installation.
+Anaconda depends on several external php and javascript libraries. The easiest way to install and update them is by using a dependency manager. Anaconda uses composer for php dependencies and bower for javascript libraries. As composer fetches libraries from github, so git has to be installed and configured as well.
 
-## 3. Composer
+### Installing git
 
-Anaconda uses the dependency manager composer to install php libraries. Composer fetches libraries from github, so git has to be installed and configured as well.
-
-### Installing git on Windows
+#### Windows
 
 [Download](ttps://git-scm.com/download/win) and install the installer package.
 
@@ -67,8 +62,6 @@ git config --global user.name "MyGitUsername"
 git config --global user.email "me@example.com
 ```
 
-### Installing git on linux
-
 #### Debian/ubuntu
 
 ```
@@ -77,11 +70,11 @@ git config --global user.name "MyGitUsername"
 git config --global user.email "me@example.com
 ```
 
-### Installing Composer on Windows
+### Installing Composer
+
+#### Windows
 
 [Download](https://getcomposer.org/download) and install composer. The Composer directory (C:\ProgramData\ComposerSetup\bin) is also added to your system path, so you execute the composer command from every directory. More information can be found on https://getcomposer.org.
-
-### Installing Composer on Linux
 
 #### Debian/Ubuntu:
 
@@ -98,7 +91,18 @@ curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 ```
 
-### Test composer installation
+#### Mac:
+
+Homebrew works best:
+
+```
+brew tap homebrew/dupes
+brew tap homebrew/php
+brew install php56
+brew install composer
+```
+
+#### Test composer installation
 
 Now you can use composer everywhere on your server on the command line via
 
@@ -106,24 +110,46 @@ Now you can use composer everywhere on your server on the command line via
 composer
 ```
 
-Type the above command to make sure Composer is installed correctly.
+### Installing bower
 
-Please note: A lot of tutorials show composer commands like this: php composer.phar. That’s not necessary anymore as we have “installed” Composer. A single composer command followed by the arguments is all you need.
+## linux:
 
-### Running Composer
+```
+npm install -g bower
+```
+
+## Mac:
+
+```
+brew install bower
+```
+
+
+### Install dependencies with composer and bower
 
 The file composer.json contains all the information on dependencies, so all that needs to be done is to execute the following command in the www/ directory:
 
 ```
 cd /path/to/www/
 composer install
+bower install
 ```
 
-The php packages can be updated with:
+The packages can be updated anytime with:
 
 ```
 composer update
+bower update
 ```
+
+You can now check whether all php requirements for the installation are met, and sort out any issues:
+
+```
+http://anaconda-url/requirements.php
+```
+
+where you replace "anaconda-url" with the url of the anaconda installation.
+
 
 ## 4. Database
 
@@ -190,6 +216,16 @@ psql -d anaconda -c "REASSIGN OWNED BY postgres TO anaconda"
 
 Note: ideally use UTF encoding. Set it explicitly with --lc-collate if you want to be sure.
 
+### Configuring the database link
+
+Change the access information in www/db.sample.php to match the credentials that you have chosen earlier and save the new file as db.php in the same directory. E.g. using linux:
+
+```
+cd www
+cp db.sample.php db.php
+nano db.php
+```
+
 
 ### Maintaining the database.
 
@@ -207,13 +243,26 @@ sudo chmod -R 777 uploads
 sudo chmod -R 777 components
 ```
 
-And for the .htaccess files to work, make sure that the AllowOverride option is set to all in the apache configuration file:
+For the .htaccess files to work correctly, the AllowOverride option has to be set to All in the apache configuration file:
 
 ```
 <Directory "/var/www/html">
 [...]
     Options Indexes FollowSymLinks
+    AllowOverride All
 ```
+and apache has to be able to rewrite urls:
+
+```
+LoadModule rewrite_module libexec/apache2/mod_rewrite.so
+```
+
+Lastly, if you are ready to use the side for production purposes, make sure to comment the following two lines in web/index.php:
+
+```
+// defined('YII_DEBUG') or define('YII_DEBUG', true);
+// defined('YII_ENV') or define('YII_ENV', 'dev');
+``` 
 
 That’s all. The website should work now when accessing the web url.
 

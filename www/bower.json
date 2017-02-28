@@ -1,0 +1,13 @@
+{
+    "name": "anaconda",
+    "dependencies": {
+	"bootstrap": "*",
+	"jquery": "*",
+	"jquery-colorbox": "*",
+	"jquery-ui": "*",
+	"jquery.inputmask": "*",
+	"punycode": "*",
+	"typeahead.js": "*",
+	"yii2-pjax": "*"
+    }
+}

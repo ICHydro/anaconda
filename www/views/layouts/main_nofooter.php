@@ -95,39 +95,6 @@ AppAsset::register($this);
 </div>
 
 
-<footer class="footer">
-    <div class="container">
-        <div class="row links">
-<!--            <div class="col-lg-4 col-md-12">
-                <?=\Yii::t('footer', 'Contact the Mountain-EVO team:'); ?>
-                <br /><?=\Yii::t('footer', 'w.buytaert@imperial.ac.uk'); ?>
-            </div> -->
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <h4><?=\Yii::t('footer', 'OBSERVATIONS'); ?></h4>
-                <?=\Yii::t('footer', 'VIEW RAW DATA'); ?><br />
-                <?=\Yii::t('footer', 'UPLOAD DATA'); ?><br />
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <h4><?=\Yii::t('footer', 'STORIES'); ?></h4>
-                <?=\Yii::t('footer', 'WATCH VIDEOS'); ?><br />
-                <?=\Yii::t('footer', 'UPLOAD STORY'); ?><br />
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <h4><?=\Yii::t('footer', 'END USERS'); ?></h4>
-                <?=\Yii::t('footer', 'FARMERS'); ?><br />
-                <?=\Yii::t('footer', 'POLICY MAKERS'); ?><br />
-            </div>
-            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                <h4><?=\Yii::t('footer', 'ABOUT'); ?></h4>
-                <?=\Yii::t('footer', "TEAM"); ?><br />
-                <?=Html::a(\Yii::t('footer', "CONTACT"), 'http://www.imperial.ac.uk/people/w.buytaert'); ?>
-                <br />
-            </div>
-
-        </div>
-        <p class="text-center">&copy; Mountain-EVO team, <?= date('Y') ?> </p>
-    </div>
-</footer>
 
 <?php $this->endBody() ?>
 </body>

@@ -80,11 +80,11 @@ a.btn-primary {
 }
 .footer{
 	background-color: #7d7d7d;
-	padding: 2%;
+	padding: 10px;
 	color: white;
 }
 .footer .row{
-	margin-bottom: 5%;
+/*	margin-bottom: 2%; */
 }
 .warning-message{
 	background-color: black;
@@ -280,10 +280,36 @@ form button, form .btn-default:hover, form .btn-default:focus, form .btn-default
 footer .links div{
 	padding-bottom: 25px;
 	padding-top: 5px;
+        text-align: center;
 }
 a.btn{
 	color: inherit;
 }
+
+/* allow for full-screen container */
+
+.container-fluid {
+       padding-right: 0px;
+       padding-left: 0px;
+}
+
+.navbar {
+      border: 0px;
+}
+
+/* full height observatory */
+
+.site-observatory {
+        position: absolute;
+        height:100%;
+        display:table;
+        width:100%;
+        margin-top: -50px;
+        padding: 50px 0 0 0;
+        box-sizing: border-box;
+	background-color: #dcefdf;
+}
+
 
 
 /* Mobile */

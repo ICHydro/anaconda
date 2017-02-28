@@ -1,7 +1,13 @@
+
+<!-- next block is for the sensor popup. Can be removed once pop up funcionality is integrated in main page -->
+
 <?php
 
 use yii\helpers\Html;
 use yii\web\View;
+
+
+
 $this->registerJsFile(Yii::getAlias('@web').'/js/popup.js', ['depends' => [yii\web\JqueryAsset::className()]]);
 
 
@@ -19,24 +25,44 @@ use himiklab\colorbox\Colorbox;
     ],
     'coreStyle' => 1
 ]) ?>
+
+<!-- end popup block -->
+
 <div class="site-observatory">
 
-    <div class="container warning-message">
-        <div class='row'>
-            <div class="col-lg-12  text-center">
-                <p><?=\Yii::t('infobar', 'Use these graphs and maps to explore data collected by local environmental sensors.'); ?> 
-                   <?= Html::a(\Yii::t('infobar', 'select a sensor'), ['sensorpopup'], ['class' => 'popupss']); ?> <?=\Yii::t('infobar', 'to start.'); ?></p>
-            </div>
+    <!-- some css integrated here to obtain full page height -->
+    <div class="row" style="display:table-row;height:100%;">
+
+        <div class="col-lg-3 sidenav-widget" style="display:table-cell;float: none;">
+                <?php include_once ('inc/menu.php'); ?>
+                <?= Html::a(\Yii::t('infobar', 'select a sensor'), ['sensorpopup'], ['class' => 'popupss']); ?> <?=\Yii::t('infobar', 'to start.'); ?></p>
+
         </div>
+
+        <div class="col-lg-9" style="display:table-cell;float: none;" id="map">
+        </div>
+
     </div>
 
-    <div class="container  main-content">
-        <div class="row">
-            <div class="col-lg-3 sidenav-widget">
-                <?php include_once ('inc/menu.php'); ?>
-            </div>
-            <div class="col-lg-9">
-                <?php
+
+</div>
+
+<script>
+
+function initMap() {
+        var center = {lat: -3, lng: -71.66};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 5,
+          center: center
+        });
+}
+</script> 
+
+<script async defer src="<?="https://maps.googleapis.com/maps/api/js?key=".Yii::$app->params['google_api_key']."&callback=initMap"?>" type="text/javascript"></script>
+
+
+
+<!--                <?php
                     foreach ($locations as $location) {
                         echo "<h3>".ucfirst($location->getName())."</h3>";
                         echo $location->getDescription();
@@ -44,28 +70,6 @@ use himiklab\colorbox\Colorbox;
                         echo Html::a("View details for ". $location->getName(), ['sensorpopup', 'locationid' => $location->id], ['class' => 'btn btn-primary popupss']);
                     }
                 ?>
-                <p><br /></p>
-            </div>
-        </div>
-        <div class="row main-title">
-            <?=\Yii::t('content', 'How is this data collected?'); ?>
-        </div>    
-        <div class="row main-block">
-            <img src='<?php echo Yii::getAlias('@web'); ?><?=\Yii::t('images', '/images/photos/pluviometer.png'); ?>' class='img-responsive' />
-            <h2>
-                <?=\Yii::t('content', 'Pluvio Meter'); ?>
-            </h2>
-            <p>
-                <?=\Yii::t('content', 'Explain what sensors are used, how data is collected, etc'); ?> <br />
-                <?=\Yii::t('content', 'Explain'); ?><br />
-                <?=\Yii::t('content', 'Eplain'); ?><br />
-                <br /><br />
-                <a href="#"><?=\Yii::t('content', 'Read more link'); ?></a>
-                <br />
-                <br />
-                <?=\Yii::t('content', 'Find out about all the types of weather sensor used in these areas.'); ?>
-            </p>
-        </div>    
-    </div>
+                -->
 
-</div>
+
