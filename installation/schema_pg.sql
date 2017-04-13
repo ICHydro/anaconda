@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS calibration (
 -- Structure for table catchment
 --
 
-CREATE TABLE IF NOT EXISTS catchment (
+CREATE TABLE IF NOT EXISTS catchments (
   id serial PRIMARY KEY,
   name varchar(255) NOT NULL,
   name_es varchar(255) DEFAULT NULL,
@@ -104,9 +104,26 @@ CREATE TABLE IF NOT EXISTS role (
   updated_at timestamp NULL DEFAULT NULL,
   can_admin integer NOT NULL DEFAULT '0');
 
+CREATE TABLE locations (location_id serial,
+                        location_name varchar(64),
+                        CONSTRAINT pk_locations PRIMARY KEY (location_id));
+
 --
--- Table sensor
+-- Sensors table. Note: There are two tables that need to be merged eventually; "sensors" is inherited from the IMHEA system; "sensor" is from Webvillage
 --
+
+CREATE TABLE sensors (sensor_id serial,
+                      sensor_name character varying(64),
+                      lat real,
+                      lon real,
+                      location_id integer,   
+                      catchment_id integer,       -- refers to a gauging location that closes the catchment
+                      partner varchar(64),
+		      timezone varchar(20),
+                      CONSTRAINT pk_sensors PRIMARY KEY (sensor_id),
+                      CONSTRAINT fk_catchment FOREIGN KEY (catchment_id) REFERENCES catchments),
+                      CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES locations);
+
 
 CREATE TABLE IF NOT EXISTS sensor (
   id serial PRIMARY KEY,
@@ -181,6 +198,45 @@ CREATE TABLE IF NOT EXISTS user_token (
 --  KEY user_token_user_id (user_id)
 );
 
+-- Other tables inherited from IMHEA
+
+
+CREATE TABLE variables (var_id serial,
+                        name varchar(20),
+                        description varchar(64),
+                        CONSTRAINT pk_var PRIMARY KEY (var_id));
+
+CREATE TABLE units (unit_id serial,
+                    name varchar(20),
+		    regex varchar(20),
+                    CONSTRAINT pk_units PRIMARY KEY (unit_id));
+
+CREATE TABLE files (file_id serial,
+                    path varchar(512),
+                    mtime timestamp with time zone NOT NULL,
+		    uploadstatus integer,
+                    CONSTRAINT pk_file PRIMARY KEY (file_id));
+
+CREATE TABLE observations (obs_id serial,
+                           value numeric NOT NULL,
+                           "timestamp" timestamp with time zone NOT NULL,
+                           var_id integer,  
+                           sensor_id integer,
+			   unit_id integer,
+                           file_id integer,
+                           CONSTRAINT pk_obs PRIMARY KEY (obs_id),
+                           CONSTRAINT fk_file FOREIGN KEY (file_id) REFERENCES files,
+                           CONSTRAINT fk_sensors FOREIGN KEY (sensor_id) REFERENCES sensors,
+                           CONSTRAINT fk_units FOREIGN KEY (unit_id) REFERENCES units,
+                           CONSTRAINT fk_var FOREIGN KEY (var_id) REFERENCES variables);
+
+CREATE TABLE uptime (uptime_id serial,
+                     sensor_id integer,
+                     "timestamp" timestamp with time zone NOT NULL,
+                     switch boolean,
+                     CONSTRAINT pk_uptime PRIMARY KEY (uptime_id),
+                     CONSTRAINT fk_sensors FOREIGN KEY (sensor_id) REFERENCES sensors);
+
 
 -- Constraints
 
@@ -207,6 +263,11 @@ ALTER TABLE user_auth
 
 ALTER TABLE user_token
   ADD CONSTRAINT user_token_user_id FOREIGN KEY (user_id) REFERENCES "user" (id);
+
+
+--indices
+
+CREATE INDEX timestamp_idx_1 ON observations (timestamp) WHERE sensor_id=1;
 
 
 

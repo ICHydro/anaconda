@@ -18,16 +18,34 @@ INSERT INTO "sensor" ("id", "name", "catchmentid", "latitude", "longitude", "sen
 (11, '123456', 1, 20, 40, 'Weighing Gauge', 'mm', NULL, NULL, NULL, '0', 'lalala@example.com'),
 (12, '123456', 1, 20, 40, 'Weighing Gauge', 'mm', NULL, NULL, NULL, '0', 'lalala@example.com'),
 (13, '123456', 1, 20, 40, 'Weighing Gauge', 'inch', NULL, NULL, NULL, 'Observation 2', 'lalala@example.com'),
-(14, '', 2, 20, 40, 'Weighing Gauge', 'mm', NULL, NULL, NULL, 'Observation 2', 'bart.demaesschalck@gmail.com'),
-(15, '123123', 2, 20, 20, 'Weighing Gauge', 'inch', NULL, NULL, NULL, 'Observation 2', 'bart.demaesschalck@gmail.com'),
-(16, 'Sensor 3', 2, 20, 40, 'Weighing Gauge', 'inch', NULL, NULL, NULL, 'Observation 2', 'bart.demaesschalck@gmail.com');
+(14, '', 2, 20, 40, 'Weighing Gauge', 'mm', NULL, NULL, NULL, 'Observation 2', 'me@example.com'),
+(15, '123123', 2, 20, 20, 'Weighing Gauge', 'inch', NULL, NULL, NULL, 'Observation 2', 'me@example.com'),
+(16, 'Sensor 3', 2, 20, 40, 'Weighing Gauge', 'inch', NULL, NULL, NULL, 'Observation 2', 'me@example.com');
 
 
--- INSERT INTO migration (version, apply_time) VALUES
--- ('m000000_000000_base', 1450878781),
--- ('m150214_044831_init_user', 1450878791),
--- ('m170610_152817_i18n', 1462146099);
+--# locations
 
+INSERT INTO locations VALUES(DEFAULT, 'Paradize');
 
+--# units
+
+INSERT INTO units VALUES(DEFAULT, 'degrees C', '[Dd]eg.*C');
+INSERT INTO units VALUES(DEFAULT, 'cm water column', 'cm.*H2O');
+INSERT INTO units VALUES(DEFAULT, 'mm', 'mm');
+
+--# variables
+
+INSERT INTO variables VALUES(DEFAULT, 'temperature', 'temperature');
+INSERT INTO variables VALUES(DEFAULT, 'precipitation', 'precipitation');
+INSERT INTO variables VALUES(DEFAULT, 'level', 'water level');
+
+--# sensors
+
+INSERT INTO sensors VALUES(DEFAULT,'Rivergauge_1', 0, 0, 1, 1, 'NA', 'America/Lima');
+INSERT INTO sensors VALUES(DEFAULT,'Raingauge_1', 0, 0, 1, 1, 'NA', 'America/Lima');
+
+--# dummy file
+
+INSERT INTO files VALUES(DEFAULT, '/dev/null', now());
 
 

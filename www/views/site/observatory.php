@@ -46,26 +46,26 @@ use yii\web\JsExpression;
 
 $data = [
     [
-        'text' => 'Parent 1',
+        'text' => 'Piura',
         'nodes' => [
             [
-                'text' => 'Child 1',
+                'text' => 'Conservado el Paramo',
                 'nodes' => [
                     [
-                        'text' => 'Grandchild 1'
+                        'text' => 'PUI_01_HI_01'
                     ],
                     [
-                        'text' => 'Grandchild 2'
+                        'text' => 'PIU_01_PO_01'
                     ]
                 ]
             ],
             [
-                'text' => 'Child 2',
+                'text' => 'Semiconservada Chames',
             ]
         ],
     ],
     [
-        'text' => 'Parent 2',
+        'text' => 'Huamantanga',
     ]
 ];
 

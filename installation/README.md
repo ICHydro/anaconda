@@ -6,7 +6,7 @@ Anaconda is designed for a [LAMP](https://en.wikipedia.org/wiki/LAMP_%28software
 
 ### Requirements:
 
-The Yii2 framework on which the project is built, needs PHP 5.4 or higher with the mbstring extension and PCRE-support.
+The Yii2 framework and its extensions need PHP 5.6 or higher with the mbstring extension and PCRE-support.
 
 ### Redhat/Centos
 
@@ -169,7 +169,7 @@ We use the standard LAMP setup, which includes MySQL as the database. MySQL shou
 
 The file init.sql installs a default admin user, which is needed to login. You can change the details of the file before running it.
 
-Optionally you can run data.sql, which gives you some dummy data to play with. You can also change this file at your leasure before uploading.
+Optionally you can run data.sql and ts.sql (unzip first!), which gives you some dummy data to play with. You can also change these files at your leasure before uploading.
 
 
 ### Preparing MySQL
@@ -204,6 +204,8 @@ Windows:
 ```
 C:\wamp\bin\mysql\mysqlX.X.X\bin\mysql -u root -p anaconda < anaconda-master\installation\schema.sql
 C:\wamp\bin\mysql\mysqlX.X.X\bin\mysql -u root -p anaconda < anaconda-master\installation\init.sql
+C:\wamp\bin\mysql\mysqlX.X.X\bin\mysql -u root -p anaconda < anaconda-master\installation\ts.sql
+
 ```
 
 To create a specific user for the project, you can execute the following command:
@@ -232,6 +234,7 @@ createuser -P anaconda
 psql -d anaconda -c "ALTER DATABASE anaconda OWNER TO anaconda"
 psql -d anaconda -U anaconda -a -f schema_pg.sql
 psql -d anaconda -U anaconda -a -f init.sql
+psql -U anaconda -d anaconda -a -f ts.sql
 ```
 
 Note: ideally use UTF encoding. Set it explicitly with --lc-collate if you want to be sure.

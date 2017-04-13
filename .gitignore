@@ -1,6 +1,9 @@
 .DS_Store
 .#*
 *.swp
+*.swm
+*.swn
+*.swo
 *.autosave
 www/vendor/
 www/config/db.php 
