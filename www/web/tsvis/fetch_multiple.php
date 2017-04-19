@@ -1,6 +1,6 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-$con = pg_Connect("host=localhost port=5432 dbname=hydrovis user=web password=We@therVis");
+$con = pg_Connect("host=localhost port=5432 dbname=anaconda user=anaconda password=anaconda");
 $stat = pg_connection_status($con);
 if ($stat === PGSQL_CONNECTION_OK) {
   //  echo 'Connection status ok';

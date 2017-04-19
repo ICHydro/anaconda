@@ -50,7 +50,6 @@ unzip master
 cp anaconda-master/www/* /var/www/html/
 cp anaconda-master/www/.htaccess /var/www/html/
 cp anaconda-master/www/.bowerrc /var/www/html/
-
 ```
 
 
@@ -58,13 +57,22 @@ cp anaconda-master/www/.bowerrc /var/www/html/
 
 Anaconda depends on several external php and javascript libraries. The easiest way to install and update them is by using a dependency manager. Anaconda uses composer for php dependencies, which in its turn uses bower for javascript libraries. As composer fetches libraries from github, git has to be installed and configured as well.
 
-Note: if you prefer not too install the additional software on your production server, you can install the dependencies using another system, and move it onto the server afterwards. Of course 
+Note: if you prefer not to install the additional software on your production server, you can install the dependencies using another system, and move it onto the server afterwards. Of course this makes it more difficult to update the dependencies at a later stage.
 
 ### Installing git
 
 #### Windows
 
 [Download](ttps://git-scm.com/download/win) and install the installer package.
+
+
+#### Debian/Ubuntu:
+
+```
+sudo apt-get install git
+```
+
+#### Configuration:
 
 Configure git with:
 
@@ -73,19 +81,11 @@ git config --global user.name "MyGitUsername"
 git config --global user.email "me@example.com"
 ```
 
-#### Debian/ubuntu
-
-```
-sudo apt-get install git
-git config --global user.name "MyGitUsername"
-git config --global user.email "me@example.com"
-```
-
 ### Installing Composer
 
 #### Windows
 
-[Download](https://getcomposer.org/download) and install composer. The Composer directory (C:\ProgramData\ComposerSetup\bin) is also added to your system path, so you execute the composer command from every directory. More information can be found on [the composer site] (https://getcomposer.org). Don't forget to install the fxp plugin to ensure that composer and bower interact nicely.
+[Download](https://getcomposer.org/download) and install composer. The Composer directory (C:\ProgramData\ComposerSetup\bin) is also added to your system path, so you execute the composer command from every directory. More information can be found on [the composer site] (https://getcomposer.org). Don't forget to install the fxp plugin to make sure that composer and bower interact nicely.
 
 #### Debian/Ubuntu:
 

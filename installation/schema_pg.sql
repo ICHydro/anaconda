@@ -121,7 +121,7 @@ CREATE TABLE sensors (sensor_id serial,
                       partner varchar(64),
 		      timezone varchar(20),
                       CONSTRAINT pk_sensors PRIMARY KEY (sensor_id),
-                      CONSTRAINT fk_catchment FOREIGN KEY (catchment_id) REFERENCES catchments),
+                      CONSTRAINT fk_catchment FOREIGN KEY (catchment_id) REFERENCES catchments,
                       CONSTRAINT fk_location FOREIGN KEY (location_id) REFERENCES locations);
 
 
