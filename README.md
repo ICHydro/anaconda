@@ -5,13 +5,13 @@ Anaconda is an experimental web platform for the visualization of environmental 
 # Licence
 
 The Yii framework is released under the BSD licence 
-(see [Licence_yii](docs/Licence_yii.md)).
+(see [Licence_yii](docs/LICENSE_yii.md)).
 
 The time series visualization framework is released under the MIT licence 
-(see [Licence_tsvis](docs/Licence_tsvis.md)).
+(see [Licence_tsvis](docs/LICENSE_tsvis.md)).
 
 All other parts of the software are released under the MIT licence
-(see [Licence](docs/Licence.md)).
+(see [Licence](docs/LICENSE.md)).
 
 # Installation
 Recommended and fastest way to set up demo is to use [Vagrant](https://www.vagrantup.com/),
