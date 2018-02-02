@@ -12,6 +12,7 @@ use app\models\ContactForm;
 use app\models\Catchment;
 use app\models\Sensor;
 use app\models\UploaddataForm;
+use app\models\Observation;
 
 
 
@@ -62,8 +63,18 @@ class SiteController extends Controller
     public function actionObservatory($sensorid=null){
         $content = null;
         if (isset($sensorid)){
-            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
-            $content = $sensor->name;
+            // TODO get search parameters from user (view)
+            $dataPoints = [];
+            $results = Observation::find()->
+            where(['sensor_id' => $sensorid])->
+            andWhere(['between','timestamp','"2016-04-02 15:40:00','2016-04-02 17:00:00'])->
+            orderBy('timestamp ASC')->all();
+
+            //TODO use samplings from fetch_simple
+            foreach ($results as $result) {
+                array_push($dataPoints, array('x'=> $result->timestamp, 'value'=> $result->value));
+            }
+            $content = json_encode($dataPoints);
         }
 
         $locations = Catchment::find()->all();
