@@ -59,21 +59,23 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionObservatory($locationid=null, $sensorid=null){
-        if (isset($locationid)){
-            $location = Catchment::find()->where(['id' => $locationid])->one();
-            if (isset($sensorid)){
-                $sensor = Sensor::find()->where(['id' => $sensorid])->one();
-                return $this->render('sensor', array('location'=> $location, 'sensor' => $sensor));
-            }else{
-                $sensors = Sensor::find()->where(['catchmentid' => $location->id]) ->all();
-                return $this->render('location', array('location'=> $location, 'sensors' => $sensors));
-            }
+    public function actionObservatory($sensorid=null){
+        $content = null;
+        if (isset($sensorid)){
+            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+            $content = $sensor->name;
         }
+
         $locations = Catchment::find()->all();
+        $tree_data = array();
+        foreach ($locations as $location) {
+            $location_name = $location->getAttribute('name');
+            $sensors = Sensor::find()->where(['catchmentid' => $location->id])->all();
+            $tree_data[$location_name] = $sensors;
+        }
 
         $this->layout='main_nofooter.php';
-        return $this->render('observatory', array('locations' => $locations));
+        return $this->render('observatory',  array('tree_data' => $tree_data, 'content' => $content));
     }
 
     public function actionAddsensor($locationid=null){
