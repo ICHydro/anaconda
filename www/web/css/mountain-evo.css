@@ -323,3 +323,10 @@ a.btn{
 	}
 }
 
+.treeview {
+	margin-right: 15px;
+}
+
+#content {
+	background-color: white;
+}

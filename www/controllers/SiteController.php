@@ -62,19 +62,95 @@ class SiteController extends Controller
 
     public function actionObservatory($sensorid=null){
         $content = null;
+        $data_points = [];
         if (isset($sensorid)){
             // TODO get search parameters from user (view)
             $dataPoints = [];
+            $con1 = '2016-04-02 15:40:00';
+            $con2 = '2016-05-02 17:00:00';
+            $numIntervals = 400;
+            $includeMinMax = true;
+
             $results = Observation::find()->
             where(['sensor_id' => $sensorid])->
-            andWhere(['between','timestamp','"2016-04-02 15:40:00','2016-04-02 17:00:00'])->
+            andWhere(['between','timestamp',$con1,$con2])->
             orderBy('timestamp ASC')->all();
 
             //TODO use samplings from fetch_simple
-            foreach ($results as $result) {
-                array_push($dataPoints, array('x'=> $result->timestamp, 'value'=> $result->value));
+            $timePerInterval = (strtotime($con2)*1000 - strtotime($con1)*1000) / $numIntervals;
+            $currTime = strtotime($con1)*1000;
+
+            //Find start of load request in the raw dataset
+            // (this should be zero with a freshly retrieved dataset but may change when zooming?)
+            $currIdx = 0;
+            for ($i = 0; $i < sizeof($results); $i++) {
+                if (strtotime($results[$currIdx]['timestamp'])*1000 < ($currTime - $timePerInterval)) {
+                    $currIdx++;
+                } else {
+                    break;
+                }
             }
-            $content = json_encode($dataPoints);
+
+            // Calculate average/min/max while downsampling
+            while ($currIdx < sizeof($results) and $currTime < strtotime($con2)*1000) {
+                $numPoints = 0;
+                $sum = 0;
+                $min = 9007199254740992;
+                $max = -9007199254740992;
+                while ($currIdx < sizeof($results) and strtotime($results[$currIdx]['timestamp'])*1000 < $currTime) {
+                    $sum += $results[$currIdx]['value'];
+                    $min = min($min, $results[$currIdx]['value']);
+                    $max = max($max, $results[$currIdx]['value']);
+                    $currIdx++;
+                    $numPoints++;
+                }
+                if ($numPoints == 0) {
+                    if ($includeMinMax) {
+                        array_push($dataPoints, array(
+                            'x' => $currTime,
+                            'avg' => null,
+                            'min' => null,
+                            'max' => null
+                        ));
+                    } else {
+                        array_push($dataPoints, array(
+                            'x' => $currTime,
+                            'avg' => null
+                        ));
+                    }
+                } else { // numPoints != 0
+                    $avg = $sum / $numPoints;
+
+                    if ($includeMinMax) {
+                        array_push($dataPoints, array(
+                            'x' => $currTime,
+                            'avg' => round($avg, 2),
+                            'min' => round($min, 2),
+                            'max' => round($max, 2),
+                        ));
+                    } else {
+                        array_push($dataPoints, array(
+                            'x' => $currTime,
+                            'avg' => round($avg,2)
+                        ));
+                    }
+                }
+                $currTime += $timePerInterval;
+                $currTime = round($currTime, 2);
+            }
+
+
+            foreach ($dataPoints as $point) {
+                array_push($data_points, array($point['x'], $point['avg']));
+            }
+            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+            $catchment = Catchment::find()->where(['id' => $sensor->catchmentid])->one();
+            $content = array(
+                'sensor' => $sensor,
+                'catchment' => $catchment,
+                'data_points' => json_encode($data_points)
+            );
+
         }
 
         $locations = Catchment::find()->all();
@@ -86,7 +162,10 @@ class SiteController extends Controller
         }
 
         $this->layout='main_nofooter.php';
-        return $this->render('observatory',  array('tree_data' => $tree_data, 'content' => $content));
+        return $this->render('observatory',  array(
+            'tree_data' => $tree_data,
+            'content' => $content,
+        ));
     }
 
     public function actionAddsensor($locationid=null){
