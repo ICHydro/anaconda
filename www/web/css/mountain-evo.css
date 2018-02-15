@@ -330,3 +330,7 @@ a.btn{
 #content {
 	background-color: white;
 }
+
+#chart_type{
+	width: auto;
+}

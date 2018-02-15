@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -60,23 +61,39 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
-    public function actionObservatory($sensorid=null){
+    public function actionObservatory(){
         $content = null;
         $data_points = [];
-        if (isset($sensorid)){
+        $request = Yii::$app->request;
+
+        // parse data form post method
+        $sensor_id = ArrayHelper::getValue($request, function ($request){
+            return $request->post('sensor_id');
+        });
+        $chart_type = ArrayHelper::getValue($request, function ($request){
+            return $request->post('chart_type');
+        }, 'line');
+        $time_span = ArrayHelper::getValue($request, function ($request){
+            return $request->post('time_span');
+        }, '9 months');
+
+
+        if (isset($sensor_id)){
             // TODO get search parameters from user (view)
             $dataPoints = [];
-            $con1 = '2016-04-02 15:40:00';
-            $con2 = '2016-05-02 17:00:00';
-            $numIntervals = 400;
-            $includeMinMax = true;
+
+            $now=strtotime("now");
+            $con1 = date("Y-m-d H:i:s", strtotime("-".$time_span, $now));
+            $con2 = date("Y-m-d H:i:s", $now);  // e.g.'2016-04-02 15:40:00'
+            $numIntervals = 400; // where do we get this?
+            $includeMinMax = true; // where do we get this?
 
             $results = Observation::find()->
-            where(['sensor_id' => $sensorid])->
+            where(['sensor_id' => $sensor_id])->
             andWhere(['between','timestamp',$con1,$con2])->
             orderBy('timestamp ASC')->all();
 
-            //TODO use samplings from fetch_simple
+            //TODO samplings from fetch_simple, this needs to be optimized
             $timePerInterval = (strtotime($con2)*1000 - strtotime($con1)*1000) / $numIntervals;
             $currTime = strtotime($con1)*1000;
 
@@ -143,29 +160,37 @@ class SiteController extends Controller
             foreach ($dataPoints as $point) {
                 array_push($data_points, array($point['x'], $point['avg']));
             }
-            $sensor = Sensor::find()->where(['id' => $sensorid])->one();
+            $sensor = Sensor::find()->where(['id' => $sensor_id])->one();
             $catchment = Catchment::find()->where(['id' => $sensor->catchmentid])->one();
             $content = array(
                 'sensor' => $sensor,
                 'catchment' => $catchment,
-                'data_points' => json_encode($data_points)
+                'data_points' => json_encode($data_points),
+                'time_span' => $time_span,
+                'chart_type' => $chart_type
             );
 
+            return $this->renderAjax('observatory_content',  array(
+                'content' => $content
+            ));
+
+        }
+        else {
+            $locations = Catchment::find()->all();
+            $tree_data = array();
+            foreach ($locations as $location) {
+                $location_name = $location->getAttribute('name');
+                $sensors = Sensor::find()->where(['catchmentid' => $location->id])->all();
+                $tree_data[$location_name] = $sensors;
+            }
+
+            $this->layout='main_nofooter.php';
+            return $this->render('observatory',  array(
+                'tree_data' => $tree_data,
+                'content' => $content,
+            ));
         }
 
-        $locations = Catchment::find()->all();
-        $tree_data = array();
-        foreach ($locations as $location) {
-            $location_name = $location->getAttribute('name');
-            $sensors = Sensor::find()->where(['catchmentid' => $location->id])->all();
-            $tree_data[$location_name] = $sensors;
-        }
-
-        $this->layout='main_nofooter.php';
-        return $this->render('observatory',  array(
-            'tree_data' => $tree_data,
-            'content' => $content,
-        ));
     }
 
     public function actionAddsensor($locationid=null){
