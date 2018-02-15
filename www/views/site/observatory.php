@@ -1,16 +1,19 @@
-<!-- treeview widget from yii2-widget-bootstraptreeview -->
-
 <?php
 
 use execut\widget\TreeView;
 use yii\web\JsExpression;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
+use yii\helpers\Html;
 use dosamigos\google\maps\LatLng;
 use dosamigos\google\maps\Map;
+use dosamigos\google\maps\overlays\InfoWindow;
+use dosamigos\google\maps\overlays\Marker;
 
 /* @var $tree_data app\controllers\SiteController */
 /* @var $content app\controllers\SiteController */
+/* @var $map_center app\controllers\SiteController */
+
 Pjax::widget(['id' => 'content']);
 
 $data = [];
@@ -26,7 +29,18 @@ foreach ($tree_data as $location => $sensors){
 
 $onSelect = new JsExpression(<<<JS
 function (undefined, item) {
-    fetchTSData(item.sensor_id);
+    if (item.sensor_id){
+        fetchTSData(item.sensor_id);
+    }
+    else{
+        $.pjax({
+        container: 'body',
+        timeout: null,
+        url: '/site/observatory',
+        type: 'POST',
+        data: {'location':item.text}
+    });
+    }
 }
 JS
 );
@@ -51,6 +65,7 @@ $groupsContent = TreeView::widget([
         <!-- TODO fix layout (responsive design) - canvas problem -->
         <div class="col-lg-3 col-xs-2 col-sm-2 sidenav-widget" style="display:table-cell;float: none;">
             <h2>Locations</h2>
+            <!-- treeview widget from yii2-widget-bootstraptreeview -->
             <?php echo $groupsContent; ?>
         </div>
 
@@ -62,13 +77,31 @@ $groupsContent = TreeView::widget([
                 $map_source = '';
             }
             else{
-                $coord = new LatLng(['lat' => -3, 'lng' => -71.66]);
+                $center = new LatLng(['lat' => $map_center['lat'], 'lng' => $map_center['lon']]);
                  $map = new Map([
-                     'center' => $coord,
-                     'zoom' => 5,
+                     'center' => $center,
+                     'zoom' => 4,
                      'width' => '100%',
                      'height' => '100%',
                  ]);
+
+                foreach ($tree_data as $sensors){
+                    foreach ($sensors as $sensor) {
+                        $position = new LatLng(['lat' => $sensor->latitude, 'lng' => $sensor->longitude]);
+                        $map_marker = new Marker([
+                            'position' => $position,
+                        ]);
+
+                        $map_marker->attachInfoWindow(
+                            new InfoWindow([
+                                'content' => Html::Button($sensor->name,
+                                    ['class' => 'show_sensor_data', 'value' => $sensor->id, 'onclick' =>'fetchTSData(this.value)'])
+                            ])
+                        );
+
+                        $map->addOverlay($map_marker);
+                    }
+                }
                  echo $map->display();
             }
             ?>

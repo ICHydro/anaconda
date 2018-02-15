@@ -338,3 +338,11 @@ a.btn{
 .observatory-content{
 	margin-left: 50px;
 }
+
+.show_sensor_data{
+	background-color: transparent;
+	border: none;
+	color: blue;
+	font-size: large;
+	font-weight: 400;
+}
