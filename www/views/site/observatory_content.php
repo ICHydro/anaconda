@@ -4,7 +4,7 @@ use yii\helpers\Html;
 /* @var $content app\controllers\SiteController */
 ?>
 
-<div class="row" style="margin-left: 50px">
+<div class="observatory-content">
     <div id="description">
         <?php
         echo '<h2>'.$content["sensor"]->name.'</h2>'.
@@ -50,7 +50,6 @@ use yii\helpers\Html;
             ])
         ?>
     </span>
-
 </div>
 
 <script>

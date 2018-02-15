@@ -6,6 +6,8 @@ use execut\widget\TreeView;
 use yii\web\JsExpression;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
+use dosamigos\google\maps\LatLng;
+use dosamigos\google\maps\Map;
 
 /* @var $tree_data app\controllers\SiteController */
 /* @var $content app\controllers\SiteController */
@@ -53,32 +55,27 @@ $groupsContent = TreeView::widget([
         </div>
 
         <div class="col-lg-9 col-xs-10 col-sm-10" style="display:table-cell;float: none" id="content">
+            <div class="row" style="height: 100%">
             <?php
             if (isset($content)){
                 echo $this->render('observatory_content', ['content' => $content]);
                 $map_source = '';
             }
             else{
-                $map_source = "https://maps.googleapis.com/maps/api/js?key=".Yii::$app->params['google_api_key']."&callback=initMap";
+                $coord = new LatLng(['lat' => -3, 'lng' => -71.66]);
+                 $map = new Map([
+                     'center' => $coord,
+                     'zoom' => 5,
+                     'width' => '100%',
+                     'height' => '100%',
+                 ]);
+                 echo $map->display();
             }
             ?>
+            </div>
         </div>
     </div>
 </div>
-
-<script>
-    // TODO create vector layer with sensors based on their location
-    // center on map extent of sensor vector layer
-    function initMap() {
-        var center = {lat: -3, lng: -71.66};
-        var map = new google.maps.Map(document.getElementById('content'), {
-            zoom: 5,
-            center: center
-        });
-    }
-</script>
-
-<script async defer src="<?=$map_source?>" type="text/javascript"></script>
 
 
 
