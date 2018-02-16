@@ -102,14 +102,73 @@ make sure to comment the following two lines in web/index.php:
 ``` 
 
 ## Windows
-TODO
 
-* Download the installation file from <http://www.wampserver.com/> and
+Since anaconda relies on [Apache] (https://httpd.apache.org/download.cgi) web server ,
+[PostgreSQL](https://www.postgresql.org/download/windows/) and [php](http://windows.php.net/download/), 
+you need either install them separately or simply use Bitnami stack ['WAPP'](https://bitnami.com/stack/wapp/installer ).
+Here we use the latter approach. 
 
-* Open the installation file and follow the self-explanatory process to complete the download.
+### 1. WAPP 
 
-[Download](https://getcomposer.org/download) and install composer. The Composer directory (C:\ProgramData\ComposerSetup\bin) is also added to your system path, so you execute the composer command from every directory. More information can be found on [the composer site] (https://getcomposer.org). Don't forget to install the fxp plugin to make sure that composer and bower interact nicely.
+Download and install WAPP stack. Set up apache port and postgres root password. 
+In all configuration below we use installation directory 'C:/Bitnami/wappstack-7.1.14-0'. 
+Replace it with one of yours. 
 
+### 2. php composer
+ 
+Follow CLI option for composer [installation](https://getcomposer.org/download/).
+
+Install asset plugin. For using composer you need to open Bitnami console ("Start -> Bitnami APPNAME Stack -> Application console").
+Run `php composer.phar global require "fxp/composer-asset-plugin:^1.4.1"`.
+
+### 3. install bower
+
+First you need to install [node.js](https://nodejs.org/en/). Then simply run:
+```npm install -g bower```.
+
+### 4. install anaconda
+
+Create application directory in Bitnami stack `/apps` directory (e.g. C:/Bitnami/wappstack-7.1.14-0/apps/anaconda).
+
+- copy www to C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/www
+- copy installation to C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/installation
+- copy installation/db_default.php to C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/www/config/db.php
+- copy C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/www/config/params.sample.php to C:/Bitnami/wappstack-7.1.14-0/anaconda/config/params.php
+- install dependencies:
+    ```
+    cd C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/www
+    php C:\Bitnami\wappstack-7.1.14-0\composer.phar install
+    ```
+
+### 5. set up PostgreSQL 
+
+Unzip ts.zip in C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/installation. 
+Then run following commands from Bitnami console:
+```
+cd C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/installation
+psql -U postgres -c "CREATE USER anaconda WITH PASSWORD \'anaconda\';"
+psql -U postgres -c "CREATE DATABASE anaconda;"
+psql -U postgres -d anaconda -c "ALTER DATABASE anaconda OWNER TO anaconda;
+psql -U postgres -c "SET CLIENT_ENCODING TO 'utf8';
+psql -U postgres -d anaconda -q -f schema_pg.sql
+psql -U postgres -d anaconda -q -f init.sql
+psql -U postgres -d anaconda -q -f data.sql
+psql -U postgres -d anaconda -q -f ts.sql
+psql -d anaconda -U postgres -c "GRANT USAGE ON SCHEMA public TO anaconda;"
+```
+
+Notes: If you encounter some troubles with data.sql or ts.sql you may need to connect to database and run queries manually.
+For ts.sql it may be needed to change encoding appropriate for windows. 
+
+### 6. configure Apache
+
+The last step is to configure web server properly:
+- create configuration directory (e.g. C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/conf/)
+- copy installation/anaconda_bitnami.conf to C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/conf/anaconda.conf
+- add line to C:\Bitnami\wappstack-7.1.14-0\apache2\conf\bitnami\bitnami-apps-prefix.conf: 
+    `Include "C:/Bitnami/wappstack-7.1.14-0/apps/anaconda/conf/httpd-prefix.conf"`
+- restart apache (e.g. from Bitnami stack manager)
+- test installation accessing `localhost/anaconda`
 
 ## Mac
 TODO

@@ -14,8 +14,8 @@ All other parts of the software are released under the MIT licence
 (see [Licence](docs/LICENSE.md)).
 
 # Installation
-Recommended and fastest way to set up demo is to use [Vagrant](https://www.vagrantup.com/),
-e.g. from root directory run:
+Recommended and fastest way to set up demo is to use [Vagrant](https://www.vagrantup.com/), with [VirtualBox](https://www.virtualbox.org/) provider installed.
+Then from anaconda root directory simply run:
 ```
 vagrant up
 ``` 
