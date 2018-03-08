@@ -346,3 +346,8 @@ a.btn{
 	font-size: large;
 	font-weight: 400;
 }
+
+.locations-tree-view{
+	margin-left:10px;
+	margin-right:10px
+}

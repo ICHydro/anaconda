@@ -64,9 +64,13 @@ $groupsContent = TreeView::widget([
 
         <!-- TODO fix layout (responsive design) - canvas problem -->
         <div class="col-lg-3 col-xs-2 col-sm-2 sidenav-widget" style="display:table-cell;float: none;">
-            <h2>Locations</h2>
-            <!-- treeview widget from yii2-widget-bootstraptreeview -->
-            <?php echo $groupsContent; ?>
+            <div class="row">
+                <div class="locations-tree-view">
+                    <h2>Locations</h2>
+                    <!-- treeview widget from yii2-widget-bootstraptreeview -->
+                    <?php echo $groupsContent; ?>
+                </div>
+            </div>
         </div>
 
         <div class="col-lg-9 col-xs-10 col-sm-10" style="display:table-cell;float: none" id="content">
