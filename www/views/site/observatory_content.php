@@ -18,6 +18,11 @@ use yii\helpers\Html;
     <div id="graph"></div>
 
     <span id="range-btns-cont-1" class="btn-group range-btns-cont" style="visibility: visible;">
+        <button class="range-btns-toggle collapsed btn" data-toggle="collapse" data-target="#range-btns-list">
+            Options
+        </button>
+
+        <ul id="range-btns-list" class="collapse" style="list-style-type: none">
         <?php
         $time_spans = [
                 '5y'=>'5 years',
@@ -40,15 +45,16 @@ use yii\helpers\Html;
             if ($content["time_span"] === $value) {
                 Html::addCssClass($button_options, 'active');
             }
-            echo Html::Button($key, $button_options);
+            echo "<li style='float: left'>" . Html::Button($key, $button_options) . "</li>";
         };
 
-        echo Html::dropDownList('chart_type', $content['chart_type'], ['line' => 'Line', 'bar' => 'Bar'], [
+        echo "<li style='float: left'>" . Html::dropDownList('chart_type', $content['chart_type'], ['line' => 'Line', 'bar' => 'Bar'], [
                 'id' => 'chart_type',
                 'class' => 'form-control',
                 'onchange'=>'createDygraph('.$content['data_points'].', this.value);'
-            ])
+            ]) . "</li>";
         ?>
+        </ul>
     </span>
 </div>
 

@@ -311,6 +311,14 @@ a.btn{
 }
 
 
+.range-btns-toggle{
+	display: none;
+}
+
+#range-btns-cont-1{
+	position: absolute;
+	bottom: 20px;
+}
 
 /* Mobile */
 @media only screen and (max-width: 1199px) {
@@ -321,7 +329,27 @@ a.btn{
 	.jumbotron p{
 		font-size: 14px;
 	}
+
+	.range-btns-toggle{
+		display: block;
+	}
+
+	.btn {
+		padding: 3px 9px;
+	}
+
+	#range-btns-cont-1 {
+		bottom: 5px;
+	}
 }
+
+/* Desktop */
+@media (min-width: 1199px) {
+	#range-btns-list{
+		display: block;
+	}
+}
+
 
 .treeview {
 	margin-right: 15px;
@@ -350,4 +378,12 @@ a.btn{
 .locations-tree-view{
 	margin-left:10px;
 	margin-right:10px
+}
+
+#graph{
+	position: absolute;
+	left: 20px;
+	right: 20px;
+	top: 200px;
+	bottom: 100px;
 }
