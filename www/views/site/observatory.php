@@ -4,11 +4,6 @@ use execut\widget\TreeView;
 use yii\web\JsExpression;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
-use yii\helpers\Html;
-use dosamigos\google\maps\LatLng;
-use dosamigos\google\maps\Map;
-use dosamigos\google\maps\overlays\InfoWindow;
-use dosamigos\google\maps\overlays\Marker;
 
 /* @var $tree_data app\controllers\SiteController */
 /* @var $content app\controllers\SiteController */
@@ -62,7 +57,6 @@ $groupsContent = TreeView::widget([
     <!-- some css integrated here to obtain full page height -->
     <div class="row" style="display:table-row;height:100%;">
 
-        <!-- TODO fix layout (responsive design) - canvas problem -->
         <div class="col-lg-3 col-xs-2 col-sm-2 sidenav-widget" style="display:table-cell;float: none;">
             <div class="row">
                 <div class="locations-tree-view">

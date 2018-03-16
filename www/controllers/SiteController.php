@@ -14,29 +14,8 @@ use app\models\Catchment;
 use app\models\Sensor;
 use app\models\UploaddataForm;
 use app\models\Observation;
+use app\components\utility\GeometryUtils;
 
-// quick solution from https://stackoverflow.com/questions/6671183/calculate-the-center-point-of-multiple-latitude-longitude-coordinate-pairs
-// should be under MIT licence
-// TODO we might want to place it somewhere else (helper?) and rewrite it
-/**
- * Calculate center of given coordinates
- * @param  array    $coordinates    Each array of coordinate pairs
- * @return array                    Center of coordinates
- */
-function getCoordsCenter($coordinates) {
-    $lats = $lons = array();
-    foreach ($coordinates as $key => $value) {
-        array_push($lats, $value[0]);
-        array_push($lons, $value[1]);
-    }
-    $minlat = min($lats);
-    $maxlat = max($lats);
-    $minlon = min($lons);
-    $maxlon = max($lons);
-    $lat = $maxlat - (($maxlat - $minlat) / 2);
-    $lng = $maxlon - (($maxlon - $minlon) / 2);
-    return array("lat" => $lat, "lon" => $lng);
-}
 
 class SiteController extends Controller
 {
@@ -211,23 +190,23 @@ class SiteController extends Controller
                     $tree_data[$location_name] = $sensors;
                     $coordinates = [];
                     foreach ($sensors as $sensor){
-                        array_push($coordinates, [$sensor->latitude,$sensor->longitude]);
+                        array_push($coordinates, ['lat'=>$sensor->latitude,'lon'=>$sensor->longitude]);
                     }
-                    $center = getCoordsCenter($coordinates);
-                    $markers_centers[$location_name] = [$center['lat'], $center['lon']];
+                    $center = GeometryUtils::getCoordsCenter($coordinates);
+                    $markers_centers[$location_name] = ['lat'=>$center['lat'], 'lon'=>$center['lon']];
                 }
             }
 
             // center map to selected location
             if (isset($selected_location)){
-                $map_center = ['lat' => $markers_centers[$selected_location][0], 'lon'=>$markers_centers[$selected_location][1]];
+                $map_center = ['lat' => $markers_centers[$selected_location]['lat'], 'lon'=>$markers_centers[$selected_location]['lon']];
                 return $this->renderAjax('observatory_map',  array(
                     'tree_data' => $tree_data,
                     'map_center' => $map_center,
                 ));
             }
             else {
-                $map_center = getCoordsCenter($markers_centers);
+                $map_center = GeometryUtils::getCoordsCenter($markers_centers);
             }
 
             $this->layout='main_nofooter.php';
