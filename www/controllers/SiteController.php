@@ -221,7 +221,7 @@ class SiteController extends Controller
             // center map to selected location
             if (isset($selected_location)){
                 $map_center = ['lat' => $markers_centers[$selected_location][0], 'lon'=>$markers_centers[$selected_location][1]];
-                return $this->renderAjax('observatory',  array(
+                return $this->renderAjax('observatory_map',  array(
                     'tree_data' => $tree_data,
                     'map_center' => $map_center,
                 ));
