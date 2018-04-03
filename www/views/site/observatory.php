@@ -68,7 +68,6 @@ $groupsContent = TreeView::widget([
         </div>
 
         <div class="col-lg-9 col-xs-10 col-sm-10" style="display:table-cell;float: none" id="content">
-            <div class="row" style="height: 100%">
             <?php
             if (isset($content)){
                 echo $this->render('observatory_content', ['content' => $content]);
@@ -81,7 +80,6 @@ $groupsContent = TreeView::widget([
                 ]);
             }
             ?>
-            </div>
         </div>
     </div>
 </div>

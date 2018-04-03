@@ -16,13 +16,8 @@ class GeometryUtils
         $lon = ArrayHelper::getColumn($coordinates, 'lon');
 
         //TODO add some limit validations for lat and lon
-        $min_lat = min($lat);
-        $max_lat = max($lat);
-        $min_lon = min($lon);
-        $max_lon = max($lon);
-
-        $lat = $max_lat - (($max_lat - $min_lat) / 2);
-        $lon = $max_lon - (($max_lon - $min_lon) / 2);
+        $lat = (max($lat) + min($lat)) / 2;
+        $lon = (max($lon) + min($lon)) / 2;
         return array("lat" => $lat, "lon" => $lon);
     }
 }
