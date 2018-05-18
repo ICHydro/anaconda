@@ -51,7 +51,7 @@ use yii\helpers\Html;
         echo "<li style='float: left'>" . Html::dropDownList('chart_type', $content['chart_type'], ['line' => 'Line', 'bar' => 'Bar'], [
                 'id' => 'chart_type',
                 'class' => 'form-control',
-                'onchange'=>'createDygraph('.$content['data_points'].', this.value);'
+                'onchange'=>'createDygraph(sampledData, this.value);'
             ]) . "</li>";
         ?>
         </ul>
@@ -61,6 +61,7 @@ use yii\helpers\Html;
 <script>
     var chartType = '<?= $content['chart_type']?>';
     var rawData = <?= $content['data_points']?>;
-    createDygraph(rawData,chartType);
+    var sampledData = sampleData(rawData);
+    createDygraph(sampledData,chartType);
 </script>
 

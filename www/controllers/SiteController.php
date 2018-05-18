@@ -63,7 +63,6 @@ class SiteController extends Controller
 
     public function actionObservatory(){
         $content = null;
-        $data_points = [];
         $request = Yii::$app->request;
 
         // parse data form post method
@@ -80,95 +79,33 @@ class SiteController extends Controller
             return $request->post('location');
         });
 
-
         if (isset($sensor_id)){
-            // TODO get search parameters from user (view)
-            $dataPoints = [];
-
             $now=strtotime("now");
             $con1 = date("Y-m-d H:i:s", strtotime("-".$time_span, $now));
             $con2 = date("Y-m-d H:i:s", $now);  // e.g.'2016-04-02 15:40:00'
-            $numIntervals = 400; // where do we get this?
-            $includeMinMax = true; // where do we get this?
 
-            $results = Observation::find()->
-            where(['sensor_id' => $sensor_id])->
-            andWhere(['between','timestamp',$con1,$con2])->
-            orderBy('timestamp ASC')->all();
+            $connection = Yii::$app->getDb();
+            $command = $connection->createCommand("
+              SELECT json_agg(json_build_object('time', timestamp, 'value', value))  AS agg 
+              FROM observations WHERE 
+                sensor_id = :sensor_id AND 
+                timestamp >= :start_date AND 
+                timestamp < :end",
+                [
+                    ':sensor_id' => $sensor_id,
+                    ':start_date' => $con1,
+                    ':end' => $con2
+                ]
+            );
 
-            //TODO samplings from fetch_simple, this needs to be optimized
-            $timePerInterval = (strtotime($con2)*1000 - strtotime($con1)*1000) / $numIntervals;
-            $currTime = strtotime($con1)*1000;
-
-            //Find start of load request in the raw dataset
-            // (this should be zero with a freshly retrieved dataset but may change when zooming?)
-            $currIdx = 0;
-            for ($i = 0; $i < sizeof($results); $i++) {
-                if (strtotime($results[$currIdx]['timestamp'])*1000 < ($currTime - $timePerInterval)) {
-                    $currIdx++;
-                } else {
-                    break;
-                }
-            }
-
-            // Calculate average/min/max while downsampling
-            while ($currIdx < sizeof($results) and $currTime < strtotime($con2)*1000) {
-                $numPoints = 0;
-                $sum = 0;
-                $min = 9007199254740992;
-                $max = -9007199254740992;
-                while ($currIdx < sizeof($results) and strtotime($results[$currIdx]['timestamp'])*1000 < $currTime) {
-                    $sum += $results[$currIdx]['value'];
-                    $min = min($min, $results[$currIdx]['value']);
-                    $max = max($max, $results[$currIdx]['value']);
-                    $currIdx++;
-                    $numPoints++;
-                }
-                if ($numPoints == 0) {
-                    if ($includeMinMax) {
-                        array_push($dataPoints, array(
-                            'x' => $currTime,
-                            'avg' => null,
-                            'min' => null,
-                            'max' => null
-                        ));
-                    } else {
-                        array_push($dataPoints, array(
-                            'x' => $currTime,
-                            'avg' => null
-                        ));
-                    }
-                } else { // numPoints != 0
-                    $avg = $sum / $numPoints;
-
-                    if ($includeMinMax) {
-                        array_push($dataPoints, array(
-                            'x' => $currTime,
-                            'avg' => round($avg, 2),
-                            'min' => round($min, 2),
-                            'max' => round($max, 2),
-                        ));
-                    } else {
-                        array_push($dataPoints, array(
-                            'x' => $currTime,
-                            'avg' => round($avg,2)
-                        ));
-                    }
-                }
-                $currTime += $timePerInterval;
-                $currTime = round($currTime, 2);
-            }
-
-
-            foreach ($dataPoints as $point) {
-                array_push($data_points, array($point['x'], $point['avg']));
-            }
+            $result = $command->queryAll();
+            $data_points = (isset($result[0]['agg']) ? $result[0]['agg'] : '[]');
             $sensor = Sensor::find()->where(['id' => $sensor_id])->one();
             $catchment = Catchment::find()->where(['id' => $sensor->catchmentid])->one();
             $content = array(
                 'sensor' => $sensor,
                 'catchment' => $catchment,
-                'data_points' => json_encode($data_points),
+                'data_points' => $data_points,
                 'time_span' => $time_span,
                 'chart_type' => $chart_type
             );
