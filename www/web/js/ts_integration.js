@@ -33,23 +33,27 @@ var fetchTSData = function (sensorID, timeSpan='9 months', chartType='line') {
 
 var sampleData = function(rawData) {
     var data = [];
-    var numIntervals = window.innerWidth/2;
-    var samplingLength = rawData.length/numIntervals;
-    for (var i=0; i<rawData.length; i+=samplingLength){
-        var sampleArray = rawData.slice(i,i+samplingLength);
-        var timestampSum = 0;
-        var valueSum = 0;
-        var min = sampleArray[0]['value'];
-        var max = sampleArray[0]['value'];
-        sampleArray.forEach(function(element) {
-            timestampSum += Date.parse(element['time']);
-            valueSum += element['value'];
-            min = (element['value'] < min) ? element['value'] : min;
-            max = (element['value'] > max) ? element['value'] : max;
-        });
-        var time = timestampSum/sampleArray.length;
-        var avg = valueSum/sampleArray.length;
-        data.push([new Date(time), min, avg, max]);
+    if (rawData.length) {
+        var numIntervals = window.innerWidth / 2;
+        var samplingLength = rawData.length / numIntervals;
+        for (var i = 0; i < rawData.length; i += samplingLength) {
+            var sampleArray = rawData.slice(i, i + samplingLength);
+            var timestampSum = 0;
+            var valueSum = 0;
+            var min = sampleArray[0]['value'];
+            var max = sampleArray[0]['value'];
+            sampleArray.forEach(function (element) {
+                timestampSum += Date.parse(element['time']);
+                valueSum += element['value'];
+                min = (element['value'] < min) ? element['value'] : min;
+                max = (element['value'] > max) ? element['value'] : max;
+            });
+            var time = timestampSum / sampleArray.length;
+            var avg = valueSum / sampleArray.length;
+            data.push([new Date(time), min, avg, max]);
+        }
+    } else {
+        data = [[0,0,0,0]]
     }
     return data;
 };
