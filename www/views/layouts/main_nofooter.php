@@ -25,6 +25,7 @@ AppAsset::register($this);
     <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.js"></script>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
     <link href="<?php echo Yii::getAlias('@web').'/css/mountain-evo.css'; ?>" rel="stylesheet" />
+    <script src="<?php echo Yii::getAlias('@web').'/js/dygraphPlotters.js'; ?>"></script>
     <script src="<?php echo Yii::getAlias('@web').'/js/ts_integration.js'; ?>"></script>
 </head>
 <body>
