@@ -61,14 +61,12 @@ use yii\helpers\Html;
 <script>
     var chartType = '<?= $content['chart_type']?>';
     var rawData = <?= $content['data_points']?>;
-    var sampledData = sampleData(rawData);
-    createDygraph(sampledData,chartType);
+    gData = getDygraphData(rawData);
+    createDygraph(gData,chartType);
 
     $(window).resize(function() {
-        if (rawData.length){
-            sampledData = sampleData(rawData);
-            g.updateOptions({file: sampledData})
-        }
+        gData = getDygraphData(rawData);
+        g.updateOptions({file: gData});
     });
 </script>
 
