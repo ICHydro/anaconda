@@ -25,11 +25,11 @@ use yii\helpers\Html;
         <ul id="range-btns-list" class="collapse" style="list-style-type: none">
         <?php
         $time_spans = [
+                'All'=>'all',
                 '5y'=>'5 years',
                 '3y'=>'3 years',
                 '2y'=>'2 years',
                 '1y'=>'1 year',
-                'YTD'=>'9 months',
                 '6m'=>'6 months',
                 '3m'=>'3 months',
                 '1m'=>'1 month',

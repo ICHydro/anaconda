@@ -74,29 +74,40 @@ class SiteController extends Controller
         }, 'line');
         $time_span = ArrayHelper::getValue($request, function ($request){
             return $request->post('time_span');
-        }, '9 months');
+        }, null);
         $selected_location = ArrayHelper::getValue($request, function ($request){
             return $request->post('location');
         });
 
         if (isset($sensor_id)){
             $now=strtotime("now");
-            $con1 = date("Y-m-d H:i:s", strtotime("-".$time_span, $now));
-            $con2 = date("Y-m-d H:i:s", $now);  // e.g.'2016-04-02 15:40:00'
 
             $connection = Yii::$app->getDb();
-            $command = $connection->createCommand("
+            if (isset($time_span)) {
+                $command = $connection->createCommand("
               SELECT json_agg(json_build_object('time', timestamp, 'value', value))  AS agg 
               FROM observations WHERE 
                 sensor_id = :sensor_id AND 
                 timestamp >= :start_date AND 
-                timestamp < :end",
-                [
-                    ':sensor_id' => $sensor_id,
-                    ':start_date' => $con1,
-                    ':end' => $con2
-                ]
-            );
+                timestamp < :end_date",
+                    [
+                        ':sensor_id' => $sensor_id,
+                        ':start_date' => date("Y-m-d H:i:s", strtotime("-".$time_span, $now)),
+                        ':end_date' => date("Y-m-d H:i:s", $now)
+                    ]
+                );
+            } else {
+                $command = $connection->createCommand("
+              SELECT json_agg(json_build_object('time', timestamp, 'value', value))  AS agg 
+              FROM observations WHERE 
+                sensor_id = :sensor_id AND  
+                timestamp < :end_date",
+                    [
+                        ':sensor_id' => $sensor_id,
+                        ':end_date' => date("Y-m-d H:i:s", $now)
+                    ]
+                );
+            }
 
             $result = $command->queryAll();
             $data_points = (isset($result[0]['agg']) ? $result[0]['agg'] : '[]');

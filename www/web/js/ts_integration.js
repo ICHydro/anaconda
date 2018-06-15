@@ -16,11 +16,11 @@ var createDygraph = function (data, chartType) {
     return g;
 };
 
-var fetchTSData = function (sensorID, timeSpan='9 months', chartType='line') {
+var fetchTSData = function (sensorID, timeSpan, chartType) {
     var data = {};
     data['sensor_id'] = sensorID;
-    data['chart_type'] = chartType;
-    data['time_span'] = timeSpan;
+    data['chart_type'] = chartType || 'line';
+    data['time_span'] = timeSpan || '6 months';
 
     $.pjax({
         container: '#content',
