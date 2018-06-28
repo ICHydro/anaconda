@@ -31,7 +31,17 @@ foreach ($tree_data as $sensors){
         $map_marker->attachInfoWindow(
             new InfoWindow([
                 'content' => Html::Button($sensor->name,
-                    ['class' => 'show_sensor_data', 'value' => $sensor->id, 'onclick' =>'fetchTSData(this.value)'])
+                    [
+                        'class' => 'show_sensor_data',
+                        'value' => $sensor->id,
+                        'onclick' =>'$.pjax({
+                            container: \'#content\',
+                            timeout: null,
+                            url: \'/site/observatory\',
+                            type: \'POST\',
+                            data: {"sensor_id": this.value}
+                        });'
+                    ])
             ])
         );
 

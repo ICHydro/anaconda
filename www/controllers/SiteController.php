@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use phpDocumentor\Reflection\Types\Boolean;
 use Yii;
 use yii\helpers\Url;
 use yii\helpers\ArrayHelper;
@@ -72,58 +73,20 @@ class SiteController extends Controller
         $chart_type = ArrayHelper::getValue($request, function ($request){
             return $request->post('chart_type');
         }, 'line');
-        $time_span = ArrayHelper::getValue($request, function ($request){
-            return $request->post('time_span');
-        }, null);
         $selected_location = ArrayHelper::getValue($request, function ($request){
             return $request->post('location');
         });
 
         if (isset($sensor_id)){
-            $now=strtotime("now");
-
-            $connection = Yii::$app->getDb();
-            if (isset($time_span)) {
-                $command = $connection->createCommand("
-              SELECT json_agg(json_build_object('time', timestamp, 'value', value))  AS agg 
-              FROM observations WHERE 
-                sensor_id = :sensor_id AND 
-                timestamp >= :start_date AND 
-                timestamp < :end_date",
-                    [
-                        ':sensor_id' => $sensor_id,
-                        ':start_date' => date("Y-m-d H:i:s", strtotime("-".$time_span, $now)),
-                        ':end_date' => date("Y-m-d H:i:s", $now)
-                    ]
-                );
-            } else {
-                $command = $connection->createCommand("
-              SELECT json_agg(json_build_object('time', timestamp, 'value', value))  AS agg 
-              FROM observations WHERE 
-                sensor_id = :sensor_id AND  
-                timestamp < :end_date",
-                    [
-                        ':sensor_id' => $sensor_id,
-                        ':end_date' => date("Y-m-d H:i:s", $now)
-                    ]
-                );
-            }
-
-            $result = $command->queryAll();
-            $data_points = (isset($result[0]['agg']) ? $result[0]['agg'] : '[]');
             $sensor = Sensor::find()->where(['id' => $sensor_id])->one();
             $catchment = Catchment::find()->where(['id' => $sensor->catchmentid])->one();
             $content = array(
                 'sensor' => $sensor,
                 'catchment' => $catchment,
-                'data_points' => $data_points,
-                'time_span' => $time_span,
                 'chart_type' => $chart_type
             );
 
-            return $this->renderAjax('observatory_content',  array(
-                'content' => $content
-            ));
+           return $this->renderAjax('observatory_content',  array('content' => $content));
 
         }
         else {
@@ -164,6 +127,59 @@ class SiteController extends Controller
             ));
         }
 
+    }
+
+    public function actionFetch(){
+        $content = null;
+        $request = Yii::$app->request;
+
+        // parse data form post method, data defined in GraphDataProvider.js
+        $sensor_id = ArrayHelper::getValue($request, function ($request){
+            return $request->post('sensor');
+        });
+        $chart_type = ArrayHelper::getValue($request, function ($request){
+            return $request->post('chartType');
+        }, 'line');
+        $sampling_interval = ArrayHelper::getValue($request, function ($request){
+            return (int)$request->post('numIntervals');
+        }, 0);
+        $start = ArrayHelper::getValue($request, function ($request){
+            return date("Y-m-d H:i:s", $request->post('start'));
+        }, null);
+        $end = ArrayHelper::getValue($request, function ($request){
+            return date("Y-m-d H:i:s", $request->post('end'));
+        }, null);
+
+        if ($chart_type === 'bar'){
+            $sampling_interval = round($sampling_interval/5);
+        }
+        $connection = Yii::$app->getDb();
+        $command = $connection->createCommand("
+        SELECT json_agg(json_build_object('x', timestamp, 'avg', avg, 'min', min, 'max', max)) 
+        FROM (SELECT to_timestamp(AVG(timestamps)) AS timestamp, AVG(value) AS avg, MIN(value) AS min, MAX(value) AS max
+          FROM (SELECT row_number() over (ORDER BY timestamp) AS rn, value, extract(epoch from timestamp) \"timestamps\" 
+            FROM observations WHERE 
+              sensor_id = :sensor_id AND 
+              timestamp >= :start_date AND 
+              timestamp < :end_date
+            ) x
+          GROUP BY (rn + ((SELECT count(*)/:sampling_interval FROM observations WHERE sensor_id = :sensor_id AND timestamp >= :start_date AND 
+              timestamp < :end_date)-1))/((SELECT (count(*))/:sampling_interval FROM observations WHERE sensor_id = :sensor_id AND timestamp >= :start_date AND 
+              timestamp < :end_date)+1)
+          ORDER BY timestamp ASC
+            ) as agg;",
+            [
+                ':sensor_id' => $sensor_id,
+                ':start_date' => $start,
+                ':end_date' => $end,
+                ':sampling_interval' => $sampling_interval
+            ]
+        );
+        $result = $command->queryAll();
+        $data_points = (isset($result[0]['json_agg']) ? $result[0]['json_agg'] : '[]');
+        $resp = ['data_points' => $data_points];
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        return $resp;
     }
 
     public function actionAddsensor($locationid=null){

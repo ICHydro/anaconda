@@ -25,7 +25,13 @@ foreach ($tree_data as $location => $sensors){
 $onSelect = new JsExpression(<<<JS
 function (undefined, item) {
     if (item.sensor_id){
-        fetchTSData(item.sensor_id);
+     $.pjax({
+        container: '#content',
+        timeout: null,
+        url: '/site/observatory',
+        type: 'POST',
+        data: {"sensor_id": item.sensor_id}
+    });
     }
     else{
         $.pjax({
@@ -68,6 +74,7 @@ $groupsContent = TreeView::widget([
         </div>
 
         <div class="col-lg-9 col-xs-10 col-sm-10" style="display:table-cell;float: none" id="content">
+            <div id="graph"></div>
             <?php
             if (isset($content)){
                 echo $this->render('observatory_content', ['content' => $content]);
@@ -84,7 +91,9 @@ $groupsContent = TreeView::widget([
     </div>
 </div>
 
-
+<script>
+  function getCSRF() {return  '<?=Yii::$app->request->getCsrfToken()?>'}
+</script>
 
 
 

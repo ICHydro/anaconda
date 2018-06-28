@@ -384,6 +384,11 @@ a.btn{
 	position: absolute;
 	left: 20px;
 	right: 20px;
-	top: 200px;
+	top: 250px;
 	bottom: 100px;
+}
+
+#range-btns-cont-1{
+	position: absolute;
+	left: 30px;
 }
