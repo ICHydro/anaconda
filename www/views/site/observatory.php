@@ -1,77 +1,47 @@
-
-<!-- next block is for the sensor popup. Can be removed once pop up functionality is integrated in main page -->
-
 <?php
-
-use yii\helpers\Html;
-use yii\web\View;
-
-
-
-$this->registerJsFile(Yii::getAlias('@web').'/js/popup.js', ['depends' => [yii\web\JqueryAsset::className()]]);
-
-
-$this->title = 'Mountain-Evo - Observatory';
-use himiklab\colorbox\Colorbox;
-
-?>
-
-<?= Colorbox::widget([
-    'targets' => [
-        '.colorbox' => [
-            'initialWidth' => "800",
-            'initialHeight' => "600",
-        ],
-    ],
-    'coreStyle' => 1
-]) ?>
-
-<!-- end popup block -->
-
-<div class="site-observatory">
-
-    <!-- some css integrated here to obtain full page height -->
-    <div class="row" style="display:table-row;height:100%;">
-
-        <div class="col-lg-3 sidenav-widget" style="display:table-cell;float: none;">
-
-<h3>Locations</h3>
-
-<!-- treeview widget -->
-
-        <?php
 
 use execut\widget\TreeView;
 use yii\web\JsExpression;
+use yii\widgets\Pjax;
+use yii\helpers\Url;
 
-$data = [
-    [
-        'text' => 'Piura',
-        'nodes' => [
-            [
-                'text' => 'Conservado el Paramo',
-                'nodes' => [
-                    [
-                        'text' => 'PUI_01_HI_01'
-                    ],
-                    [
-                        'text' => 'PIU_01_PO_01'
-                    ]
-                ]
-            ],
-            [
-                'text' => 'Semiconservada Chames',
-            ]
-        ],
-    ],
-    [
-        'text' => 'Huamantanga',
-    ]
-];
+/* @var $tree_data app\controllers\SiteController */
+/* @var $content app\controllers\SiteController */
+/* @var $map_center app\controllers\SiteController */
+
+Pjax::widget(['id' => 'content']);
+
+$data = [];
+foreach ($tree_data as $location => $sensors){
+    $children = [];
+    foreach ($sensors as $sensor){
+        $entry = ['text' => $sensor->name, 'href' => Url::to(['']), 'sensor_id'=>$sensor->id];
+        array_push($children, $entry);
+    }
+    $location_entry = ['text' => $location, 'nodes' => $children, 'href' => Url::to([''])];
+    array_push($data, $location_entry);
+}
 
 $onSelect = new JsExpression(<<<JS
 function (undefined, item) {
-    console.log(item);
+    if (item.sensor_id){
+     $.pjax({
+        container: '#content',
+        timeout: null,
+        url: '/site/observatory',
+        type: 'POST',
+        data: {"sensor_id": item.sensor_id}
+    });
+    }
+    else{
+        $.pjax({
+        container: 'div #content',
+        timeout: null,
+        url: '/site/observatory',
+        type: 'POST',
+        data: {'location':item.text}
+    });
+    }
 }
 JS
 );
@@ -87,50 +57,43 @@ $groupsContent = TreeView::widget([
     ],
 ]);
 
-
-echo $groupsContent;
-
 ?>
 
+<div class="container site-observatory">
+    <!-- some css integrated here to obtain full page height -->
+    <div class="row" style="display:table-row;height:100%;">
 
-<!--                <?php
-                    foreach ($locations as $location) {
-                        echo "<h3>".ucfirst($location->getName())."</h3>";
-                        echo $location->getDescription();
-                        echo "<br />";
-                        echo Html::a("View details for ". $location->getName(), ['sensorpopup', 'locationid' => $location->id], ['class' => 'btn btn-primary popupss']);
-                    }
-                ?> -->
-
-
-<!-- generate the "add sensor" button:                <?php include_once ('inc/menu.php'); ?> -->
-
-<!-- code for the popup
-                <?= Html::a(\Yii::t('infobar', 'select a sensor'), ['sensorpopup'], ['class' => 'popupss']); ?> <?=\Yii::t('infobar', 'to start.'); ?></p> -->
-
+        <div class="col-lg-3 col-xs-2 col-sm-2 sidenav-widget" style="display:table-cell;float: none;">
+            <div class="row">
+                <div class="locations-tree-view">
+                    <h2>Locations</h2>
+                    <!-- treeview widget from yii2-widget-bootstraptreeview -->
+                    <?php echo $groupsContent; ?>
+                </div>
+            </div>
         </div>
 
-        <div class="col-lg-9" style="display:table-cell;float: none;" id="map">
+        <div class="col-lg-9 col-xs-10 col-sm-10" style="display:table-cell;float: none" id="content">
+            <div id="graph"></div>
+            <?php
+            if (isset($content)){
+                echo $this->render('observatory_content', ['content' => $content]);
+                $map_source = '';
+            }
+            else{
+                echo $this->render('observatory_map', [
+                        'map_center' => $map_center,
+                        'tree_data' => $tree_data
+                ]);
+            }
+            ?>
         </div>
-
     </div>
-
-
 </div>
 
 <script>
-
-function initMap() {
-        var center = {lat: -3, lng: -71.66};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 5,
-          center: center
-        });
-}
-</script> 
-
-<script async defer src="<?="https://maps.googleapis.com/maps/api/js?key=".Yii::$app->params['google_api_key']."&callback=initMap"?>" type="text/javascript"></script>
-
+  function getCSRF() {return  '<?=Yii::$app->request->getCsrfToken()?>'}
+</script>
 
 
 

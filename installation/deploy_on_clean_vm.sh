@@ -31,7 +31,7 @@ install_deps() {
     # install composer
     curl -sS https://getcomposer.org/installer | php
     mv composer.phar /usr/local/bin/composer
-    composer global require "fxp/composer-asset-plugin:^1.2.0"
+    composer global require "fxp/composer-asset-plugin:^1.4.1"
 
     # install bower
     npm install -g bower
