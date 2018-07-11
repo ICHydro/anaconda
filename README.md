@@ -4,19 +4,29 @@ Anaconda is an experimental web platform for the visualization of environmental 
 
 # Licence
 
-The Yii framework is released under the BSD licence. See Licence_yii.md
+The Yii framework is released under the BSD licence 
+(see [Licence_yii](docs/LICENSE_yii.md)).
 
-The time series visualization framework is released under the MIT licence. See Licence_tsvis.md
+The time series visualization framework is released under the MIT licence 
+(see [Licence_tsvis](docs/LICENSE_tsvis.md)).
 
-All other parts of the software are released under the MIT licence. See Licence.md
+All other parts of the software are released under the MIT licence
+(see [Licence](docs/LICENSE.md)).
 
 # Installation
+Recommended and fastest way to set up demo is to use [Vagrant](https://www.vagrantup.com/), with [VirtualBox](https://www.virtualbox.org/) provider installed.
+Then from anaconda root directory simply run:
+```
+vagrant up
+``` 
+You can then directly access demo page in your browser at 192.168.10.80, and connect to 
+anaconda postgres database at localhost:5433 (check Vagrantfile). 
 
-Installation instructions can be found in the installation/ directory.
+If you don't want to use Vagrant then please follow notes [here](installation/README.md).
 
 # Development
+Please follow notes [here](docs/development/README.md).
 
-Notes on the development of the platform are in the development/ directory.
 
 # Contact
 

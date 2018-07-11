@@ -5,6 +5,11 @@
 *.swn
 *.swo
 *.autosave
+*.log
+.vagrant
+.idea
 www/vendor/
 www/config/db.php 
 www/config/params.php
+/www/nbproject
+installation/ts.sql

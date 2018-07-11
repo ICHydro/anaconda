@@ -22,7 +22,18 @@ AppAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head(); ?>
 
+    <script src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dygraph/2.1.0/dygraph.min.css" />
     <link href="<?php echo Yii::getAlias('@web').'/css/mountain-evo.css'; ?>" rel="stylesheet" />
+    <script src="<?php echo Yii::getAlias('@web').'/js/dygraphPlotters.js'; ?>"></script>
+    <script src="<?php echo Yii::getAlias('@web').'/js/JGS.Lineplot.js'; ?>"></script>
+    <script src="<?php echo Yii::getAlias('@web').'/js/JGS.DataFetcher.js'; ?>"></script>
+    <script src="<?php echo Yii::getAlias('@web').'/js/JGS.GraphDataProvider.js'; ?>"></script>
+
 </head>
 <body>
 <?php $this->beginBody() ?>
