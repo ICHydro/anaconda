@@ -37,7 +37,7 @@ foreach ($tree_data as $sensors){
                         'onclick' =>'$.pjax({
                             container: \'#content\',
                             timeout: null,
-                            url: \'/site/observatory\',
+                            url: \'observatory\',
                             type: \'POST\',
                             data: {"sensor_id": this.value}
                         });'

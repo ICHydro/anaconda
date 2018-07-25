@@ -1,12 +1,16 @@
 # Installation guide Anaconda
 
 ## Linux (Ubuntu 16.04)
-If you have fresh install of Ubuntu you can simply run [deploy script](deploy_on_clean_vm.sh) 
-to set up everything automatically. Otherwise you need to satisfy following requirements:
+
+These instructions are written for Ubuntu 16.04. The may well work, but are untested, on other versions of Ubuntu.
+
+If you have fresh install of Ubuntu then you can simply run [deploy script](deploy_on_clean_vm.sh) 
+to set up everything automatically. For a manual installation, follow the instructions below.
 
 ### 1. HTTP Server
 
-Install and configure HTTP server (nginx, apache). For apache do following (as sudo):
+Install and configure HTTP server (nginx, apache). For apache do the following (via sudo or as root):
+
 ```
 apt-get install apache2
 apt-get install libapache2-mod-php
@@ -21,6 +25,9 @@ service apache2 restart
 ### 2. Database (PostgreSQL)
 
 Install and configure Postgres, run (as sudo):
+
+(Note: more recent versions of postres will likely work but are untested):
+
 ```
 apt-get install postgresql-contrib-9.5
 apt-get install postgresql-9.5-postgis-2.2
@@ -28,17 +35,21 @@ apt-get install postgresql-client-9.5
 sed -i '$ a LANGUAGE="en_US.UTF-8"' /etc/default/locale
 sed -i '$ a LC_ALL="en_US.UTF-8"'  /etc/default/locale
 ```
-Create database and load data (as sudo):
+
+Create the database and load data. 
+
+Note: do *not* use the default password in a production environment.
+
 ```
 su postgres -c $'psql -c "CREATE USER anaconda WITH PASSWORD \'anaconda\';"'
 su postgres -c 'psql -c "CREATE DATABASE anaconda;"'
 su postgres -c 'psql -d anaconda -c "ALTER DATABASE anaconda OWNER TO anaconda;"'
-su postgres -c 'psql -d anaconda -q -f /installation/schema_pg.sql'
-su postgres -c 'psql -d anaconda -q -f /installation/init.sql'
-su postgres -c 'psql -d anaconda -q -f /installation/data.sql'
-cd /installation
+su postgres -c 'psql -d anaconda -q -f installation/schema_pg.sql'
+su postgres -c 'psql -d anaconda -q -f installation/init.sql'
+su postgres -c 'psql -d anaconda -q -f installation/data.sql'
+cd installation
 unzip ts.sql.zip
-su postgres -c 'psql -d anaconda -q -f /installation/ts.sql'
+su postgres -c 'psql -d anaconda -q -f ts.sql'
 rm ts.sql
 su postgres -c 'psql -d anaconda -c "GRANT USAGE ON SCHEMA public TO anaconda;"'
 su postgres -c 'psql -d anaconda -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO anaconda;"'
@@ -58,6 +69,7 @@ composer global require "fxp/composer-asset-plugin:^1.4.1"
 ```
 
 ### 4. bower
+
 Install bower via npm (as sudo):
 ```
 apt-get install npm
@@ -65,26 +77,27 @@ npm install -g bower
 ```
 
 ### 5. anaconda
+
 Finally, set up anaconda yii2 project. Download anaconda and copy the contents of the www/ directory to the root 
 of your http server (e.g. in `/var/www/`):
 ```
-sudo cp -r www /var/www/anaconda
-sudo cp installation/db_default.php /var/www/anaconda/config/db.php
-sudo cp /var/www/anaconda/config/params.sample.php /var/www/anaconda/config/params.php
+cp -r www /var/www/anaconda
+cp installation/db_default.php /var/www/anaconda/config/db.php
+cp /var/www/anaconda/config/params.sample.php /var/www/anaconda/config/params.php
 ```
 You may want to change credentials (depending on what you set for postgres db) or add google api key. 
 
 Then install dependencies via composer:
 ```
 cd /var/www/anaconda
-sudo composer install
+composer install
 ```
 and fix permissions:
 ```
-sudo chmod -R 777 runtime
-sudo chmod -R 777 web/assets
-sudo chmod -R 777 uploads
-sudo chmod -R 777 components
+chmod -R 777 runtime
+chmod -R 777 web/assets
+chmod -R 777 uploads
+chmod -R 777 components
 ```
 
 Now you are ready to test anaconda in your [browser](http://localhost/). 

@@ -28,7 +28,7 @@ function (undefined, item) {
      $.pjax({
         container: '#content',
         timeout: null,
-        url: '/site/observatory',
+        url: 'observatory',
         type: 'POST',
         data: {"sensor_id": item.sensor_id}
     });
@@ -37,7 +37,7 @@ function (undefined, item) {
         $.pjax({
         container: 'div #content',
         timeout: null,
-        url: '/site/observatory',
+        url: 'observatory',
         type: 'POST',
         data: {'location':item.text}
     });

@@ -27,7 +27,7 @@
     this.dataLoadReq['_csrf'] = getCSRF();
     $.ajax({
       type: "POST",
-      url: "/site/fetch",
+      url: "fetch",
       data: this.dataLoadReq,
       dataType:'text',
       context: this,
