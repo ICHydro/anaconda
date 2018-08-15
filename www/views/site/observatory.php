@@ -18,7 +18,8 @@ foreach ($tree_data as $location => $sensors){
         $entry = ['text' => $sensor->name, 'href' => Url::to(['']), 'sensor_id'=>$sensor->id];
         array_push($children, $entry);
     }
-    $location_entry = ['text' => $location, 'nodes' => $children, 'href' => Url::to([''])];
+    $state = ['expanded' => false];
+    $location_entry = ['text' => $location, 'nodes' => $children, 'href' => Url::to(['']), 'state' => $state];
     array_push($data, $location_entry);
 }
 
@@ -59,22 +60,20 @@ $groupsContent = TreeView::widget([
 
 ?>
 
-<div class="container site-observatory">
-    <!-- some css integrated here to obtain full page height -->
-    <div class="row" style="display:table-row;height:100%;">
+<!-- need for a row here?? -->
 
-        <div class="col-lg-3 col-xs-2 col-sm-2 sidenav-widget" style="display:table-cell;float: none;">
-            <div class="row">
+ <div class="col-lg-3 col-xs-2 col-sm-2 sidenav-widget" id="left">
                 <div class="locations-tree-view">
                     <h2>Locations</h2>
                     <!-- treeview widget from yii2-widget-bootstraptreeview -->
-                    <?php echo $groupsContent; ?>
-                </div>
-            </div>
-        </div>
+                    <div id="w0"></div>
+		</div>
+ </div>
+ 
 
-        <div class="col-lg-9 col-xs-10 col-sm-10" style="display:table-cell;float: none" id="content">
-            <div id="graph"></div>
+  <div class="col-lg-9 col-sm-10 col-xs-10" id="content">
+      <div id="graph"></div>
+
             <?php
             if (isset($content)){
                 echo $this->render('observatory_content', ['content' => $content]);
@@ -87,9 +86,8 @@ $groupsContent = TreeView::widget([
                 ]);
             }
             ?>
-        </div>
-    </div>
-</div>
+   </div>  
+
 
 <script>
   function getCSRF() {return  '<?=Yii::$app->request->getCsrfToken()?>'}

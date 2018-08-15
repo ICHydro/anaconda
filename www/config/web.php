@@ -63,7 +63,7 @@ $config = [
                 'dosamigos\google\maps\MapAsset' => [
                     'options' => [
                         'key' => $params['google_api_key'],
-                        'language' => 'id',
+                        'language' => 'en',
                         'version' => '3.1.18'
                     ]
                 ]

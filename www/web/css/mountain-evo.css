@@ -101,9 +101,6 @@ a.btn-primary {
 	margin: 0px;
 	margin-top: 10px;
 }
-.sidenav-widget{
-	 padding-right: 0px;
-}
 .nav-pills > li > a{
 	color: black;
 }
@@ -286,30 +283,40 @@ a.btn{
 	color: inherit;
 }
 
-/* allow for full-screen container */
-
 .container-fluid {
        padding-right: 0px;
        padding-left: 0px;
 }
 
+/* allow for full-screen observatory */
+
+#left {
+    position: absolute;
+    height:100%;
+    background-color: #dcefdf;
+    overflow-y: scroll; 
+    bottom: 0px;
+    top: 0px;
+padding-top: 50px;
+  }
+  
+#content {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    right: 0;
+    height:100%;
+overflow-y:scroll;
+padding-top: 50px;
+padding-left: 0px;
+padding-right: 0px;
+padding-bottom: 0px;
+}
+
+
 .navbar {
       border: 0px;
 }
-
-/* full height observatory */
-
-.site-observatory {
-        position: absolute;
-        height:100%;
-        display:table;
-        width:100%;
-        margin-top: -50px;
-        padding: 50px 0 0 0;
-        box-sizing: border-box;
-	background-color: #dcefdf;
-}
-
 
 .range-btns-toggle{
 	display: none;

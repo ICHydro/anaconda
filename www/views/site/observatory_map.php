@@ -10,8 +10,6 @@ use yii\helpers\Html;
 /* @var $map_center app\controllers\SiteController */
 ?>
 
-<div class="row" style="height: 100%">
-
 <?php
 $center = new LatLng(['lat' => $map_center['lat'], 'lng' => $map_center['lon']]);
 $map = new Map([
@@ -51,4 +49,4 @@ foreach ($tree_data as $sensors){
 
 echo $map->display();
 ?>
-</div>
+

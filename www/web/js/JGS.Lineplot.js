@@ -29,16 +29,16 @@
     var rangeEndMom = moment().utc();
     rangeEndMom.startOf('hour');
     rangeEndMom.add(1, 'hour');
-    // Set the default length of the overview time series to 6 months
+    // Set the default length of the overview time series to 5 years
     // TODO: this should ideally be the start of the entire time series.
-    var rangeStartMom = moment.utc(rangeEndMom).add(-6, 'month');
+    var rangeStartMom = moment.utc(rangeEndMom).add(-30, 'month');
 
     // activate default time span
-    this.$rangeBtnsCont.find("button[name='range-btn-6m']").addClass('active');
+    this.$rangeBtnsCont.find("button[name='range-btn-5y']").addClass('active');
     // get the sensor name:
     var sensor = $(".btn-mini.active").attr('sensor_id');
-    this.lastOption = 'range-btn-6m';
-    this.waitingOption = 'range-btn-6m';
+    this.lastOption = 'range-btn-5y';
+    this.waitingOption = 'range-btn-5y';
     //  Set the default start and end of the detailed TS view to same as the overview TS:
     var detailEndMom = moment(rangeEndMom);
     var detailStartMom = moment(rangeStartMom);
